@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.opc.constants import RELATIONSHIP_TYPE as TIPO_RELACAO
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches
@@ -184,6 +185,34 @@ def _aplica_formato(paragrafo, formato):
     return paragrafo
 
 
+def _link(paragrafo, url, formato=None):
+    """Troca o conteúdo do parágrafo por um hyperlink de verdade, clicável no .docx e no
+    .pdf gerado a partir dele. O python-docx não expõe hyperlink, então monto o XML."""
+    for run in paragrafo.runs:
+        run._element.getparent().remove(run._element)
+
+    relacao = paragrafo.part.relate_to(url, TIPO_RELACAO.HYPERLINK, is_external=True)
+    ancora = OxmlElement("w:hyperlink")
+    ancora.set(qn("r:id"), relacao)
+
+    run = OxmlElement("w:r")
+    estilo = copy.deepcopy(formato) if formato is not None else OxmlElement("w:rPr")
+    cor = OxmlElement("w:color")
+    cor.set(qn("w:val"), "0563C1")
+    sublinhado = OxmlElement("w:u")
+    sublinhado.set(qn("w:val"), "single")
+    estilo.append(cor)
+    estilo.append(sublinhado)
+    run.append(estilo)
+
+    texto = OxmlElement("w:t")
+    texto.text = url
+    run.append(texto)
+    ancora.append(run)
+    paragrafo._p.append(ancora)
+    return paragrafo
+
+
 def _larguras(tabela, polegadas):
     """Fixa a largura das colunas. Só mexer em tcW não basta: o LibreOffice segue o
     tblGrid, então as duas definições precisam concordar."""
@@ -262,7 +291,7 @@ def main():
         celula = _texto(linha.cells[0].paragraphs[0], base)
         celula.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
         _aplica_formato(celula, formato_bases)
-        _aplica_formato(_texto(linha.cells[1].paragraphs[0], link), formato_bases)
+        _link(linha.cells[1].paragraphs[0], link, formato_bases)
 
     _limpa_fim(documento)
 
