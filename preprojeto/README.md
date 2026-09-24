@@ -6,23 +6,32 @@
 
 ## O que o enunciado pede
 
-| Item | Onde está no documento |
+A entrega usa o **Template IDP.INE — Modelo de Projeto de Inteligência de Negócio**,
+publicado pelo professor. Cada item do enunciado cai em uma seção do template:
+
+| Item do enunciado | Onde está no documento |
 | --- | --- |
-| a. As duplas do trabalho de projeto aplicado | Seção 1, item a |
-| b. A empresa / segmento que será abordado | Seção 1, item b |
-| c. Área de negócio e tema | Seção 1, item c |
-| d. Perguntas que o estudo se propõe a resolver | Seção 2, item d |
-| e. Bases de dados e link da fonte | Seção 2, item e |
+| a. As duplas do trabalho de projeto aplicado | Autores, na capa |
+| b. A empresa / segmento que será abordado | *A empresa que você irá abordar* |
+| c. Área de negócio e tema | *Área de negócio e o tema abordado* |
+| d. Perguntas que o estudo se propõe a resolver | Tabela *Pergunta(s) negocial(ais)* — 5 perguntas |
+| e. Bases de dados e link da fonte | Tabela *Base de dados / Link público* — 3 bases |
 
 ## Escopo escolhido
 
-**Segmento:** revenda de combustíveis no Brasil — postos revendedores e as distribuidoras
-cujas bandeiras eles carregam, com recorte para o Distrito Federal.
+**Título do projeto:** Precificação de combustíveis no Brasil: evolução, diferenças
+regionais e dispersão de preço na revenda.
+
+**Empresas / segmento:** revenda de combustíveis no Brasil, sob a ótica das distribuidoras
+que aparecem nomeadas no campo *Bandeira* da coleta da ANP — Vibra Energia (BR), Ipiranga
+e Raízen (Shell) — mais os postos de bandeira branca. Recorte nacional com abertura para o
+Distrito Federal.
 
 **Área de negócio:** Precificação e Inteligência de Mercado (*pricing*).
 
-**Tema:** comportamento do preço de revenda de combustíveis — evolução no tempo, diferenças
-entre regiões e UFs, dispersão de preço dentro da mesma cidade e paridade etanol/gasolina.
+**Tema:** comportamento do preço de revenda de gasolina comum, etanol hidratado e diesel
+S-10 — evolução no tempo, diferenças entre regiões e UFs, dispersão de preço dentro da
+mesma cidade, paridade etanol/gasolina e efeito da bandeira.
 
 O tema de Segurança Pública foi deliberadamente evitado: ele aparece no enunciado apenas
 como exemplo de referência.
@@ -42,7 +51,8 @@ Todas são públicas, de download livre e sem cadastro.
 | Caminho | O que é |
 | --- | --- |
 | `IDP.INE - Pré-ProjetoFinal-B1 (2026.2S).pdf` | Enunciado da atividade |
-| `entrega/` | Entrega final (`.docx` e `.pdf`) |
+| `entrega/` | Entrega final (`.docx` e `.pdf`), no template oficial |
+| `../docs/Template IDP.INE - Modelo de Projeto...docx` | Template oficial usado na entrega |
 
 ## Como reproduzir
 
@@ -50,8 +60,6 @@ Todas são públicas, de download livre e sem cadastro.
 python3 scripts/07_gera_preprojeto.py
 ```
 
-> O template oficial do pré-projeto só é publicado no AVA. Enquanto ele não sai, o
-> documento é montado sobre o `[Template aluno]` da disciplina: capa e tabela de
-> identificação são as mesmas e o corpo traz as seções do enunciado. Quando o template
-> oficial chegar, o conteúdo está todo centralizado no topo de
-> `scripts/07_gera_preprojeto.py` e pode ser transposto sem reescrever o texto.
+> Todo o conteúdo (título, autores, texto das seções, perguntas e bases) fica em
+> constantes no topo de `scripts/07_gera_preprojeto.py`. Para mudar qualquer item, basta
+> editar a constante e rodar o script de novo.

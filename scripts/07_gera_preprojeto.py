@@ -1,11 +1,10 @@
 """
 Avaliação Continuada (Pré-projeto) - gera a entrega em .docx e .pdf.
 
-O enunciado pede cinco itens: a dupla, a empresa/segmento, a área de negócio e o
-tema, as perguntas que o estudo se propõe a resolver e as bases de dados com o
-link da fonte. O template oficial do pré-projeto só é publicado no AVA, então o
-documento é montado sobre o "[Template aluno]" da disciplina: a capa e a tabela
-de identificação são as mesmas, e o corpo é reescrito com as seções do enunciado.
+Preenche o "Template IDP.INE - Modelo de Projeto de Inteligência de Negócio"
+(docs/) com os itens que o enunciado pede: a dupla, a empresa abordada, a área de
+negócio e o tema, as perguntas negociais que o estudo se propõe a resolver e as
+bases de dados com o link público de cada fonte.
 """
 import copy
 import sys
@@ -17,43 +16,57 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-from docx.shared import Inches, Pt
+from docx.shared import Inches
 
-from entrega import (PRETO, RAIZ, TEMPLATE, _acha, _clona_depois, _normaliza,
-                     _para_pdf, _sem_lista, _texto)
+from entrega import RAIZ, _clona_depois, _para_pdf, _texto
 
+TEMPLATE = RAIZ / "docs" / (
+    "Template IDP.INE - Modelo de Projeto de Inteligência de Negócio "
+    "(Prof. Bruno Miranda, 2026.2S).docx"
+)
 SAIDA = RAIZ / "preprojeto" / "entrega"
 ARQUIVO = "IDP.INE - Pré-projeto (Avaliação Continuada) - Claudio Meireles e Felipe Dutra"
 
-DUPLA = [
-    ("Claudio da Aparecida Meireles Filho", "2321070"),
-    ("Felipe Pereira Dutra", "2321017"),
+TITULO = ("Precificação de combustíveis no Brasil: evolução, diferenças regionais "
+          "e dispersão de preço na revenda")
+DISCIPLINA = "Inteligência de Negócio (INE) - Prof. Bruno Miranda - 2º semestre de 2026"
+AUTORES = ("Claudio da Aparecida Meireles Filho (2321070) e "
+           "Felipe Pereira Dutra (2321017)")
+
+EMPRESA = [
+    "O estudo é feito sobre o segmento de revenda de combustíveis no Brasil, sob a ótica "
+    "das distribuidoras que disputam a bomba. As empresas observadas são as que aparecem "
+    "nomeadas no campo Bandeira do levantamento de preços da ANP: as maiores distribuidoras "
+    "do país - Vibra Energia (bandeira BR), Ipiranga e Raízen (bandeira Shell) - e o conjunto "
+    "dos postos de bandeira branca, que não têm contrato de exclusividade com nenhuma delas.",
+
+    "A escolha se justifica porque a ANP publica o preço coletado posto a posto com a bandeira "
+    "de cada revendedor. Isso permite analisar a estratégia de preço de empresas reais, com "
+    "nome e marca, sem depender de dado proprietário: a base pública já traz a informação que "
+    "uma área de pricing usaria para monitorar a concorrência.",
+
+    "O recorte é nacional, com abertura para o Distrito Federal - mercado onde a dupla mora e "
+    "cujo comportamento de preço pretende comparar com o das demais unidades da federação.",
 ]
 
-TIPO_ATIVIDADE = "Avaliação Continuada (Pré-projeto) - Projeto Aplicado"
-ENTREGA = "25/09/2026"
-
-SEGMENTO = (
-    "Segmento de revenda de combustíveis no Brasil - os postos revendedores que vendem "
-    "gasolina comum, etanol hidratado, diesel S-10 e GNV ao consumidor final, e as "
-    "distribuidoras cujas bandeiras esses postos carregam. O estudo olha o mercado "
-    "nacional e abre um recorte para o Distrito Federal, mercado onde a dupla mora e "
-    "cujo comportamento de preço pretende comparar com o das demais unidades da federação."
-)
-
 AREA_E_TEMA = [
-    ("Área de negócio: ", "Precificação e Inteligência de Mercado (pricing). É a área que "
-     "decide o preço de bomba, acompanha o preço praticado pela concorrência e monitora a "
-     "posição competitiva da rede em cada praça."),
-    ("Tema: ", "Comportamento do preço de revenda de combustíveis no Brasil. O trabalho vai "
-     "medir como o preço evoluiu ao longo do tempo, o quanto ele varia entre regiões e "
-     "unidades da federação, qual é a dispersão de preço dentro de uma mesma cidade e em "
-     "que condições o etanol se torna vantajoso frente à gasolina."),
-    ("Por que esse tema: ", "combustível é um preço que todo consumidor acompanha e que toda "
-     "rede de postos precisa decidir toda semana, e a ANP publica a coleta de preços posto a "
-     "posto em série aberta e longa. Isso dá ao projeto um conjunto de dados com dimensão "
-     "geográfica, dimensão de tempo e dimensão de produto - exatamente o formato que o "
-     "Power BI explora bem - sem depender de dado proprietário de nenhuma empresa."),
+    ("Área de negócio: ",
+     "Precificação e Inteligência de Mercado (pricing). É a área que define o preço de bomba, "
+     "acompanha o preço praticado pela concorrência em cada praça e monitora a posição "
+     "competitiva da rede."),
+
+    ("Tema: ",
+     "Comportamento do preço de revenda de combustíveis no Brasil - gasolina comum, etanol "
+     "hidratado e diesel S-10. O trabalho vai medir como o preço evoluiu ao longo do tempo, "
+     "o quanto ele varia entre regiões e unidades da federação, qual é a dispersão de preço "
+     "dentro de uma mesma cidade, em que condições o etanol se torna vantajoso frente à "
+     "gasolina e se a bandeira do posto se traduz em diferença consistente de preço."),
+
+    ("Por que esse tema: ",
+     "combustível é um preço que todo consumidor acompanha e que toda rede de postos precisa "
+     "decidir toda semana. A coleta da ANP é semanal, posto a posto, e está publicada desde "
+     "2004, o que dá ao projeto uma base com as três dimensões que o Power BI explora bem: "
+     "geografia (região, UF e município), tempo (data da coleta) e produto/bandeira."),
 ]
 
 PERGUNTAS = [
@@ -72,213 +85,183 @@ PERGUNTAS = [
     "Em quais unidades da federação e em quais períodos o etanol hidratado foi vantajoso "
     "frente à gasolina comum, usando a regra de paridade de 70% entre os dois preços?",
 
-    "Existe diferença consistente de preço entre postos bandeirados e postos de bandeira "
-    "branca? A diferença é a mesma em todas as regiões do país?",
+    "Existe diferença consistente de preço entre as bandeiras (BR, Ipiranga, Shell) e os "
+    "postos de bandeira branca? A diferença é a mesma em todas as regiões do país?",
 ]
 
+INTRO_BASES = (
+    "As três bases são públicas, de download livre e sem cadastro. A base principal é o "
+    "Levantamento de Preços de Combustíveis da ANP, com a coleta semanal do preço praticado "
+    "em postos revendedores por região, UF, município, produto, data da coleta, valor de "
+    "venda e bandeira, publicada desde 2004. As outras duas entram como apoio: as vendas de "
+    "derivados dão o volume mensal por UF e produto, usado para ponderar as médias de preço "
+    "pelo tamanho de cada mercado; o IPCA entra como deflator, para separar alta real de "
+    "combustível de inflação geral. Os arquivos da ANP também estão espelhados no Portal "
+    "Brasileiro de Dados Abertos (dados.gov.br)."
+)
+
 BASES = [
-    ("ANP - Série histórica de preços de combustíveis",
-     "Base principal. Levantamento de Preços de Combustíveis: coleta semanal do preço "
-     "praticado em postos revendedores, com região, UF, município, produto, data da coleta, "
-     "valor de venda e bandeira. Série disponível desde 2004.",
+    ("ANP - Série histórica de preços de combustíveis (Levantamento de Preços). "
+     "Base principal.",
      "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/serie-historica-de-precos-de-combustiveis"),
 
-    ("ANP - Vendas de derivados de petróleo e etanol",
-     "Base de apoio. Volume mensal de vendas por unidade da federação e por produto, usado "
-     "para ponderar as médias de preço pelo tamanho de cada mercado e para dar contexto de "
-     "demanda às variações observadas.",
+    ("ANP - Vendas de derivados de petróleo e etanol. Base de apoio (volume por UF e produto).",
      "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/vendas-de-derivados-de-petroleo-e-etanol"),
 
-    ("IBGE / SIDRA - IPCA (tabela 1737)",
-     "Base de apoio. Índice Nacional de Preços ao Consumidor Amplo, usado como deflator para "
-     "converter os preços nominais da ANP em preços reais e separar alta de combustível de "
-     "inflação geral.",
+    ("IBGE / SIDRA - IPCA, tabela 1737. Base de apoio (deflator dos preços).",
      "https://sidra.ibge.gov.br/tabela/1737"),
 ]
 
 
-def _remove_ate(inicio, fim):
-    """Apaga tudo o que vem depois de `inicio` até `fim`, inclusive."""
-    corpo = inicio._element.getparent()
-    apagando = False
-    for elemento in list(corpo):
-        if elemento is inicio._element:
-            apagando = True
-            continue
-        if not apagando:
-            continue
-        corpo.remove(elemento)
-        if elemento is fim._element:
-            break
-
-
-def _preenche_capa(documento):
-    rotulos = {
-        "Disciplina:": "Inteligência de Negócio (INE)",
-        "Professor:": "Bruno Miranda",
-        "Tipo de atividade:": TIPO_ATIVIDADE,
-        "Semestre": "2° semestre de 2026",
-        "Departamento / Curso:": "Ciência da Computação / Engenharia de Software",
-    }
-    for linha in documento.tables[0].rows:
-        rotulo = linha.cells[0].text.strip()
-        if rotulo in rotulos:
-            _normaliza(_texto(linha.cells[1].paragraphs[0], rotulos[rotulo]))
-
-
-def _preenche_dupla(documento):
-    """O template traz uma linha de nome e uma de matrícula; a dupla precisa de duas de cada."""
-    tabela = documento.tables[1]
-    modelo_nome = copy.deepcopy(tabela.rows[0]._element)
-    modelo_matricula = copy.deepcopy(tabela.rows[1]._element)
-
-    for _ in range(len(DUPLA) - 1):
-        tabela._element.append(copy.deepcopy(modelo_nome))
-        tabela._element.append(copy.deepcopy(modelo_matricula))
-
-    for indice, (nome, matricula) in enumerate(DUPLA):
-        linha_nome = tabela.rows[indice * 2]
-        linha_matricula = tabela.rows[indice * 2 + 1]
-        _normaliza(_texto(linha_nome.cells[0].paragraphs[0], f"Aluno {indice + 1}:"))
-        _normaliza(_texto(linha_nome.cells[1].paragraphs[0], nome))
-        _normaliza(_texto(linha_matricula.cells[0].paragraphs[0], "Matrícula:"))
-        _normaliza(_texto(linha_matricula.cells[1].paragraphs[0], matricula))
-
-
-def _rotulo(ancora, texto):
-    """Subtítulo de item do enunciado (a, b, c, d, e), com respiro acima."""
-    paragrafo = _corrido(ancora, texto)
-    paragrafo.paragraph_format.space_before = Pt(14)
-    paragrafo.paragraph_format.space_after = Pt(4)
-    for run in paragrafo.runs:
-        run.bold = True
+def _troca(paragrafo, marcador, texto):
+    """Escreve no run que carrega o placeholder, preservando a formatação dele."""
+    runs = paragrafo.runs
+    posicao = next((i for i, run in enumerate(runs) if marcador in run.text), None)
+    if posicao is None:
+        raise SystemExit(f"placeholder {marcador!r} não encontrado no template")
+    for i, run in enumerate(runs):
+        run.text = texto if i == posicao else ""
     return paragrafo
 
 
-def _corrido(ancora, texto, negrito_ate=None):
-    """Acrescenta um parágrafo de texto corrido depois da âncora."""
-    paragrafo = _normaliza(_sem_lista(_clona_depois(ancora, texto)))
-    paragrafo.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-    paragrafo.paragraph_format.first_line_indent = Pt(0)
-    paragrafo.paragraph_format.left_indent = Pt(0)
+def _acha_indice(documento, inicio):
+    for indice, paragrafo in enumerate(documento.paragraphs):
+        if paragrafo.text.strip().startswith(inicio):
+            return indice
+    raise SystemExit(f"seção não encontrada no template: {inicio!r}")
+
+
+def _preenche_secao(documento, cabecalho, paragrafos):
+    """Troca o texto de exemplo que vem logo abaixo do cabeçalho da seção."""
+    ancora = documento.paragraphs[_acha_indice(documento, cabecalho) + 1]
+    atual = _texto(ancora, "")
+    for item in paragrafos:
+        rotulo, conteudo = item if isinstance(item, tuple) else ("", item)
+        atual = _clona_depois(atual, rotulo + conteudo)
+        atual.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+        for run in atual.runs:
+            run.bold = False
+        if rotulo:
+            # separa o rótulo em um run próprio para destacá-lo em negrito
+            corpo = atual.runs[0]
+            corpo.text = conteudo
+            destaque = copy.deepcopy(corpo._element)
+            corpo._element.addprevious(destaque)
+            atual.runs[0].text = rotulo
+            atual.runs[0].bold = True
+    ancora._element.getparent().remove(ancora._element)
+
+
+def _formato(run, sem_negrito=False):
+    """Cópia da formatação de fonte de um run, opcionalmente sem o negrito."""
+    formato = run._element.find(qn("w:rPr"))
+    if formato is None:
+        return None
+    copia = copy.deepcopy(formato)
+    if sem_negrito:
+        for negrito in copia.findall(qn("w:b")):
+            copia.remove(negrito)
+    return copia
+
+
+def _formato_do_cabecalho(tabela):
+    """Os parágrafos vazios do template não têm fonte definida e caem no padrão serifado;
+    herdo a do cabeçalho da própria tabela, sem o negrito."""
+    return _formato(tabela.rows[0].cells[0].paragraphs[0].runs[0], sem_negrito=True)
+
+
+def _aplica_formato(paragrafo, formato):
+    if formato is None:
+        return paragrafo
     for run in paragrafo.runs:
-        run.bold = False
-    if negrito_ate:
-        # separa o rótulo do parágrafo em um run próprio, para destacá-lo em negrito
-        restante = paragrafo.runs[0]
-        restante.text = texto[len(negrito_ate):]
-        rotulo = copy.deepcopy(restante._element)
-        restante._element.addprevious(rotulo)
-        paragrafo.runs[0].text = negrito_ate
-        paragrafo.runs[0].bold = True
+        atual = run._element.find(qn("w:rPr"))
+        if atual is not None:
+            run._element.remove(atual)
+        run._element.insert(0, copy.deepcopy(formato))
     return paragrafo
 
 
-def _tabela_de_bases(documento, ancora):
-    """Monta a tabela das bases de dados e a posiciona logo após a âncora."""
-    tabela = documento.add_table(rows=1, cols=3)
-    tabela.style = documento.tables[0].style
+def _larguras(tabela, polegadas):
+    """Fixa a largura das colunas. Só mexer em tcW não basta: o LibreOffice segue o
+    tblGrid, então as duas definições precisam concordar."""
+    propriedades = tabela._tbl.find(qn("w:tblPr"))
+    layout = OxmlElement("w:tblLayout")
+    layout.set(qn("w:type"), "fixed")
+    propriedades.append(layout)
+
+    twips = [int(round(valor * 1440)) for valor in polegadas]
+    largura_total = OxmlElement("w:tblW")
+    largura_total.set(qn("w:type"), "dxa")
+    largura_total.set(qn("w:w"), str(sum(twips)))
+    propriedades.append(largura_total)
+
+    grade = tabela._tbl.find(qn("w:tblGrid"))
+    for coluna, largura in zip(grade.findall(qn("w:gridCol")), twips):
+        coluna.set(qn("w:w"), str(largura))
+
     tabela.autofit = False
-    _com_bordas(tabela)
-
-    for celula, titulo in zip(tabela.rows[0].cells, ("Base de dados", "Conteúdo e uso no estudo", "Link da fonte")):
-        paragrafo = _normaliza(_texto(celula.paragraphs[0], titulo))
-        for run in paragrafo.runs:
-            run.bold = True
-            run.font.size = Pt(9)
-
-    for nome, descricao, link in BASES:
-        celulas = tabela.add_row().cells
-        for celula, conteudo, negrito in ((celulas[0], nome, True),
-                                          (celulas[1], descricao, False),
-                                          (celulas[2], link, False)):
-            paragrafo = _normaliza(_texto(celula.paragraphs[0], conteudo))
-            for run in paragrafo.runs:
-                run.bold = negrito
-                run.font.size = Pt(9)
-
-    larguras = (Inches(1.65), Inches(2.85), Inches(1.70))
     for linha in tabela.rows:
-        for celula, largura in zip(linha.cells, larguras):
-            celula.width = largura
-
-    ancora._element.addnext(tabela._element)
+        for celula, largura in zip(linha.cells, polegadas):
+            celula.width = Inches(largura)
     return tabela
 
 
-def _com_bordas(tabela):
-    """O template não define estilo de tabela, então as bordas vão no XML."""
-    propriedades = tabela._element.find(qn("w:tblPr"))
-    bordas = OxmlElement("w:tblBorders")
-    for lado in ("top", "left", "bottom", "right", "insideH", "insideV"):
-        borda = OxmlElement(f"w:{lado}")
-        borda.set(qn("w:val"), "single")
-        borda.set(qn("w:sz"), "4")
-        borda.set(qn("w:color"), "BFBFBF")
-        bordas.append(borda)
-    propriedades.append(bordas)
+def _ajusta_linhas(tabela, quantidade):
+    """Deixa a tabela com o número de linhas de conteúdo necessário (fora o cabeçalho)."""
+    modelo = copy.deepcopy(tabela.rows[-1]._tr)
+    while len(tabela.rows) - 1 < quantidade:
+        tabela._tbl.append(copy.deepcopy(modelo))
+    while len(tabela.rows) - 1 > quantidade:
+        tabela._tbl.remove(tabela.rows[-1]._tr)
+
+
+def _limpa_fim(documento):
+    """Descarta os parágrafos vazios do fim do template, que empurravam o documento
+    para uma página em branco a mais."""
+    for paragrafo in reversed(documento.paragraphs):
+        if paragrafo.text.strip():
+            break
+        paragrafo._element.getparent().remove(paragrafo._element)
 
 
 def main():
     documento = Document(TEMPLATE)
-    _preenche_capa(documento)
-    _preenche_dupla(documento)
-
-    # Seção 1: reaproveita o primeiro título do template.
-    titulo1 = _acha(documento, "Solução do DevLab")
-    _texto(titulo1, "A dupla, o segmento e o tema")
-
-    ancora = _acha(documento, "[Cole aqui o print")
-    _texto(ancora, "")
-    ancora = _rotulo(ancora, "a) A dupla do trabalho de projeto aplicado")
-    for indice, (nome, matricula) in enumerate(DUPLA, start=1):
-        ancora = _corrido(ancora, f"Aluno {indice}: {nome} - matrícula {matricula}.")
-    ancora = _rotulo(ancora, "b) A empresa / segmento abordado")
-    ancora = _corrido(ancora, SEGMENTO)
-    ancora = _rotulo(ancora, "c) Área de negócio e tema")
-    for rotulo, conteudo in AREA_E_TEMA:
-        ancora = _corrido(ancora, rotulo + conteudo, negrito_ate=rotulo)
-
-    # Seção 2: reaproveita o segundo título do template.
-    titulo2 = _acha(documento, "Descrição técnica do laboratório")
-    _texto(titulo2, "Perguntas de pesquisa e bases de dados")
-
-    ancora = _acha(documento, "[Descreva tecnicamente")
-    _normaliza(_texto(ancora, "d) Quais são as perguntas que o estudo se propõe a resolver?"))
-    ancora.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-    ancora.paragraph_format.space_after = Pt(6)
-    for run in ancora.runs:
-        run.bold = True
-        run.italic = False
-
-    # O template traz três perguntas como itens de uma lista, separadas por linhas em branco.
-    # Fico com o primeiro item como molde da lista e removo o resto do bloco.
-    molde = _acha(documento, "Qual foi o objetivo do DevLab?")
-    ultimo = _acha(documento, "O que você aprendeu?")
-    _remove_ate(molde, ultimo)
-
-    atual = molde
-    for indice, pergunta in enumerate(PERGUNTAS):
-        if indice:
-            atual = _clona_depois(atual, "")
-        _normaliza(_texto(atual, pergunta))
-        atual.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-        for run in atual.runs:
-            run.bold = False
-
-    ancora = _rotulo(atual, "e) Quais bases de dados serão utilizadas?")
-    ancora = _corrido(
-        ancora,
-        "Todas as bases são públicas e de download livre, sem cadastro. A base principal é a "
-        "coleta de preços da ANP; as outras duas entram como apoio para ponderação e para "
-        "correção monetária. Os arquivos também estão espelhados no Portal Brasileiro de "
-        "Dados Abertos (dados.gov.br).",
+    # guardo a fonte do corpo antes de substituir os textos de exemplo, para reusá-la
+    # nos parágrafos em branco do template, que não trazem formatação nenhuma
+    formato_corpo = _formato(
+        documento.paragraphs[_acha_indice(documento, "A empresa que você irá abordar") + 1].runs[0]
     )
-    tabela = _tabela_de_bases(documento, ancora)
-    # a tabela entrou logo depois da âncora, então o fechamento é criado e movido para depois dela
-    fechamento = _corrido(ancora, f"Data de entrega do pré-projeto: {ENTREGA}.")
-    fechamento.paragraph_format.space_before = Pt(12)
-    tabela._element.addnext(fechamento._element)
+
+    _troca(documento.paragraphs[0], "(TÍTULO DO SEU PROJETO)", TITULO)
+    _troca(documento.paragraphs[3], "(NOME DA DISCIPLINA)", DISCIPLINA)
+    _troca(documento.paragraphs[4], "(AUTORES)", AUTORES)
+
+    _preenche_secao(documento, "A empresa que você irá abordar", EMPRESA)
+    _preenche_secao(documento, "Área de negócio e o tema abordado", AREA_E_TEMA)
+
+    perguntas, bases = documento.tables
+    formato_perguntas = _formato_do_cabecalho(perguntas)
+    _ajusta_linhas(perguntas, len(PERGUNTAS))
+    for linha, pergunta in zip(perguntas.rows[1:], PERGUNTAS):
+        celula = _texto(linha.cells[0].paragraphs[0], pergunta)
+        celula.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+        _aplica_formato(celula, formato_perguntas)
+
+    intro = _texto(documento.paragraphs[_acha_indice(documento, "Quais bases de dados") + 1],
+                   INTRO_BASES)
+    intro.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+    _aplica_formato(intro, formato_corpo)
+
+    formato_bases = _formato_do_cabecalho(bases)
+    _ajusta_linhas(bases, len(BASES))
+    _larguras(bases, (2.85, 3.45))
+    for linha, (base, link) in zip(bases.rows[1:], BASES):
+        celula = _texto(linha.cells[0].paragraphs[0], base)
+        celula.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+        _aplica_formato(celula, formato_bases)
+        _aplica_formato(_texto(linha.cells[1].paragraphs[0], link), formato_bases)
+
+    _limpa_fim(documento)
 
     SAIDA.mkdir(parents=True, exist_ok=True)
     destino_docx = SAIDA / f"{ARQUIVO}.docx"
