@@ -18,7 +18,7 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches
 
-from entrega import RAIZ, _clona_depois, _para_pdf, _texto
+from entrega import PRETO, RAIZ, _clona_depois, _para_pdf, _texto
 
 TEMPLATE = RAIZ / "docs" / (
     "Template IDP.INE - Modelo de Projeto de Inteligência de Negócio "
@@ -114,13 +114,15 @@ BASES = [
 
 
 def _troca(paragrafo, marcador, texto):
-    """Escreve no run que carrega o placeholder, preservando a formatação dele."""
+    """Escreve no run que carrega o placeholder, preservando o tamanho e o peso da fonte.
+    A cor azul dos placeholders do template não é mantida: o texto preenchido vai em preto."""
     runs = paragrafo.runs
     posicao = next((i for i, run in enumerate(runs) if marcador in run.text), None)
     if posicao is None:
         raise SystemExit(f"placeholder {marcador!r} não encontrado no template")
     for i, run in enumerate(runs):
         run.text = texto if i == posicao else ""
+        run.font.color.rgb = PRETO
     return paragrafo
 
 
