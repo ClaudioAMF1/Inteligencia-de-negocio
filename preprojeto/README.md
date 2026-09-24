@@ -41,7 +41,7 @@ como exemplo de referência.
 | Base | Papel | Link |
 | --- | --- | --- |
 | ANP — Série histórica de preços de combustíveis | Principal | <https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/serie-historica-de-precos-de-combustiveis> |
-| ANP — Vendas de derivados de petróleo e etanol | Apoio (volume/demanda) | <https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/vendas-de-derivados-de-petroleo-e-etanol> |
+| ANP — Vendas de derivados de petróleo e biocombustíveis | Apoio (volume/demanda) | <https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/vendas-de-derivados-de-petroleo-e-biocombustiveis> |
 | IBGE / SIDRA — IPCA (tabela 1737) | Apoio (deflator) | <https://sidra.ibge.gov.br/tabela/1737> |
 
 Todas são públicas, de download livre e sem cadastro.

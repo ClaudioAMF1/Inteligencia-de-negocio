@@ -94,7 +94,8 @@ INTRO_BASES = (
     "Levantamento de Preços de Combustíveis da ANP, com a coleta semanal do preço praticado "
     "em postos revendedores por região, UF, município, produto, data da coleta, valor de "
     "venda e bandeira, publicada desde 2004. As outras duas entram como apoio: as vendas de "
-    "derivados dão o volume mensal por UF e produto, usado para ponderar as médias de preço "
+    "derivados de petróleo e biocombustíveis dão o volume mensal por UF e produto, usado "
+    "para ponderar as médias de preço "
     "pelo tamanho de cada mercado; o IPCA entra como deflator, para separar alta real de "
     "combustível de inflação geral. Os arquivos da ANP também estão espelhados no Portal "
     "Brasileiro de Dados Abertos (dados.gov.br)."
@@ -105,8 +106,8 @@ BASES = [
      "Base principal.",
      "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/serie-historica-de-precos-de-combustiveis"),
 
-    ("ANP - Vendas de derivados de petróleo e etanol. Base de apoio (volume por UF e produto).",
-     "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/vendas-de-derivados-de-petroleo-e-etanol"),
+    ("ANP - Vendas de derivados de petróleo e biocombustíveis. Base de apoio (volume por UF e produto).",
+     "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/vendas-de-derivados-de-petroleo-e-biocombustiveis"),
 
     ("IBGE / SIDRA - IPCA, tabela 1737. Base de apoio (deflator dos preços).",
      "https://sidra.ibge.gov.br/tabela/1737"),
