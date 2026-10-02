@@ -105,6 +105,8 @@ def _insere_prints(documento, prints):
         for run in atual.runs:
             run._element.getparent().remove(run._element)
         atual.add_run().add_picture(str(imagem), width=LARGURA_IMAGEM)
+        # prende a imagem à sua legenda, para a quebra de página não separar as duas
+        atual.paragraph_format.keep_with_next = True
 
         atual = _clona_depois(atual, legenda)
         _sem_lista(atual)
