@@ -28,90 +28,112 @@ TEMPLATE = RAIZ / "docs" / (
 SAIDA = RAIZ / "preprojeto" / "entrega"
 ARQUIVO = "IDP.INE - Pré-projeto (Avaliação Continuada) - Claudio Meireles e Felipe Dutra"
 
-TITULO = ("Precificação de combustíveis no Brasil: evolução, diferenças regionais "
-          "e dispersão de preço na revenda")
+TITULO = ("Preço de combustível e peso no orçamento do consumidor: "
+          "uma comparação entre Brasília e Goiânia")
 DISCIPLINA = "Inteligência de Negócio (INE) - Prof. Bruno Miranda - 2º semestre de 2026"
 AUTORES = ("Claudio da Aparecida Meireles Filho (2321070) e "
            "Felipe Pereira Dutra (2321017)")
 
 EMPRESA = [
-    "O estudo é feito sobre o segmento de revenda de combustíveis no Brasil, sob a ótica "
-    "das distribuidoras que disputam a bomba. As empresas observadas são as que aparecem "
-    "nomeadas no campo Bandeira do levantamento de preços da ANP: as maiores distribuidoras "
-    "do país - Vibra Energia (bandeira BR), Ipiranga e Raízen (bandeira Shell) - e o conjunto "
-    "dos postos de bandeira branca, que não têm contrato de exclusividade com nenhuma delas.",
+    "O estudo é feito sobre o segmento de revenda de combustíveis, olhando as empresas que "
+    "disputam a bomba em duas capitais vizinhas: Brasília e Goiânia. As empresas observadas "
+    "são as que aparecem nomeadas no campo Bandeira do levantamento de preços da ANP - as "
+    "maiores distribuidoras do país, Vibra Energia (bandeira BR), Ipiranga e Raízen (bandeira "
+    "Shell) - e o conjunto dos postos de bandeira branca, que não têm contrato de "
+    "exclusividade com nenhuma delas.",
 
-    "A escolha se justifica porque a ANP publica o preço coletado posto a posto com a bandeira "
-    "de cada revendedor. Isso permite analisar a estratégia de preço de empresas reais, com "
-    "nome e marca, sem depender de dado proprietário: a base pública já traz a informação que "
-    "uma área de pricing usaria para monitorar a concorrência.",
+    "A escolha se justifica porque a ANP publica o preço coletado posto a posto, com o "
+    "município e a bandeira de cada revendedor. Isso permite analisar a estratégia de preço "
+    "de empresas reais, com nome e marca, sem depender de dado proprietário.",
 
-    "O recorte é nacional, com abertura para o Distrito Federal - mercado onde a dupla mora e "
-    "cujo comportamento de preço pretende comparar com o das demais unidades da federação.",
+    ("Para quem o estudo é feito: ",
+     "para a população, o consumidor que abastece. O mesmo dado que uma área de pricing usa "
+     "para monitorar a concorrência é aqui virado para o outro lado do balcão, para responder "
+     "três perguntas do dia a dia de quem dirige: onde estou pagando mais caro, quanto eu "
+     "economizo se pesquisar antes de abastecer, e quanto do meu salário está indo para o "
+     "tanque. Brasília e Goiânia foram escolhidas por serem capitais vizinhas, com fluxo "
+     "diário de pessoas entre elas e regimes tributários estaduais distintos - o que torna a "
+     "comparação concreta para o morador das duas cidades."),
 ]
 
 AREA_E_TEMA = [
     ("Área de negócio: ",
-     "Precificação e Inteligência de Mercado (pricing). É a área que define o preço de bomba, "
-     "acompanha o preço praticado pela concorrência em cada praça e monitora a posição "
-     "competitiva da rede."),
+     "Precificação e Inteligência de Mercado (pricing), aplicada do ponto de vista do "
+     "consumidor. O trabalho usa os mesmos indicadores que a área de pricing de uma rede "
+     "acompanha - preço médio por praça, dispersão entre concorrentes, posição por bandeira - "
+     "mas para responder onde e quando vale a pena abastecer, e não que preço cobrar."),
 
     ("Tema: ",
-     "Comportamento do preço de revenda de combustíveis no Brasil - gasolina comum, etanol "
-     "hidratado e diesel S-10. O trabalho vai medir como o preço evoluiu ao longo do tempo, "
-     "o quanto ele varia entre regiões e unidades da federação, qual é a dispersão de preço "
-     "dentro de uma mesma cidade, em que condições o etanol se torna vantajoso frente à "
-     "gasolina e se a bandeira do posto se traduz em diferença consistente de preço."),
+     "Preço de revenda de gasolina comum, etanol hidratado e diesel S-10 em Brasília e "
+     "Goiânia, e o peso desse preço no orçamento das famílias. O trabalho compara as duas "
+     "capitais do preço mínimo ao máximo coletado, mede quanto se economiza escolhendo o "
+     "posto certo, calcula que percentual da renda média mensal vai para o combustível em "
+     "cada uma e verifica em que períodos o etanol compensou frente à gasolina."),
 
     ("Por que esse tema: ",
-     "combustível é um preço que todo consumidor acompanha e que toda rede de postos precisa "
-     "decidir toda semana. A coleta da ANP é semanal, posto a posto, e está publicada desde "
-     "2004, o que dá ao projeto uma base com as três dimensões que o Power BI explora bem: "
-     "geografia (região, UF e município), tempo (data da coleta) e produto/bandeira."),
+     "combustível é um preço que todo consumidor acompanha e sobre o qual quase ninguém tem "
+     "informação organizada na hora de decidir. A coleta da ANP é semanal, posto a posto, e "
+     "está publicada desde 2004, o que dá ao projeto uma base com as três dimensões que o "
+     "Power BI explora bem: geografia (região, UF e município), tempo (data da coleta) e "
+     "produto/bandeira. Cruzada com a renda média do IBGE, ela deixa de ser uma série de "
+     "preços e vira uma medida de impacto no bolso."),
 ]
 
 PERGUNTAS = [
-    "Como evoluiu o preço médio de revenda da gasolina comum, do etanol hidratado e do "
-    "diesel S-10 no Brasil na última década, e quanto dessa alta se sustenta depois de "
-    "descontada a inflação medida pelo IPCA?",
+    "Brasília ou Goiânia: em qual capital o consumidor paga mais caro pelo etanol hidratado e "
+    "pela gasolina comum? Comparando o preço mínimo, o médio e o máximo coletados em cada "
+    "semana, qual é a diferença entre as duas cidades em reais por litro?",
 
-    "Quanto o preço do mesmo produto varia entre as regiões e as unidades da federação? "
-    "Qual é a distância entre a UF mais cara e a mais barata em cada ano, e em que posição "
-    "desse ranking está o Distrito Federal?",
+    "Quanto da renda média mensal de uma família vai para o combustível em cada uma das duas "
+    "capitais? Tomando um consumo de referência de 100 litros de gasolina por mês - cerca de "
+    "1.000 km rodados com um carro que faz 10 km/l - que percentual isso representa do "
+    "rendimento médio do Distrito Federal e de Goiás, e esse percentual subiu ou caiu na "
+    "última década?",
 
-    "Qual é a dispersão de preço dentro de um mesmo município na mesma semana de coleta? "
-    "Em outras palavras: quanto o consumidor economiza, em reais por litro, saindo do posto "
-    "mais caro para o mais barato da sua cidade?",
+    "Quanto o consumidor economiza pesquisando antes de abastecer? Na mesma cidade e na mesma "
+    "semana de coleta, qual é a diferença entre o posto mais caro e o mais barato, em reais "
+    "por litro e no custo de um tanque cheio?",
 
-    "Em quais unidades da federação e em quais períodos o etanol hidratado foi vantajoso "
-    "frente à gasolina comum, usando a regra de paridade de 70% entre os dois preços?",
+    "Em quais períodos o etanol hidratado compensou frente à gasolina comum em Brasília e em "
+    "Goiânia, aplicando a regra de paridade de 70% entre os dois preços? A resposta é a mesma "
+    "nas duas capitais?",
 
-    "Existe diferença consistente de preço entre as bandeiras (BR, Ipiranga, Shell) e os "
-    "postos de bandeira branca? A diferença é a mesma em todas as regiões do país?",
+    "A bandeira do posto faz diferença no bolso? Postos BR, Ipiranga e Shell cobram de forma "
+    "consistentemente diferente dos postos de bandeira branca, e essa diferença é igual em "
+    "Brasília e em Goiânia?",
+
+    "Quanto da alta do combustível é alta de verdade? Descontada a inflação medida pelo IPCA, "
+    "o preço real do litro subiu ou caiu na última década nas duas capitais?",
 ]
 
 INTRO_BASES = (
-    "As três bases são públicas, de download livre e sem cadastro. A base principal é o "
+    "As quatro bases são públicas, de download livre e sem cadastro. A base principal é o "
     "Levantamento de Preços de Combustíveis da ANP, com a coleta semanal do preço praticado "
     "em postos revendedores por região, UF, município, produto, data da coleta, valor de "
-    "venda e bandeira, publicada desde 2004. As outras duas entram como apoio: as vendas de "
-    "derivados de petróleo e biocombustíveis dão o volume mensal por UF e produto, usado "
-    "para ponderar as médias de preço "
-    "pelo tamanho de cada mercado; o IPCA entra como deflator, para separar alta real de "
-    "combustível de inflação geral. Os arquivos da ANP também estão espelhados no Portal "
-    "Brasileiro de Dados Abertos (dados.gov.br)."
+    "venda e bandeira, publicada desde 2004 - é dela que saem Brasília e Goiânia, posto a "
+    "posto. As outras três entram como apoio: as vendas de derivados e biocombustíveis dão o "
+    "volume por UF e produto, usado para ponderar as médias pelo tamanho de cada mercado; a "
+    "PNAD Contínua dá o rendimento médio mensal do Distrito Federal e de Goiás, que é o "
+    "denominador do cálculo do peso no orçamento; e o IPCA entra como deflator, para separar "
+    "alta real de combustível de inflação geral. Os arquivos da ANP também estão espelhados "
+    "no Portal Brasileiro de Dados Abertos (dados.gov.br)."
 )
 
 BASES = [
     ("ANP - Série histórica de preços de combustíveis (Levantamento de Preços). "
-     "Base principal.",
+     "Base principal: preço posto a posto, por município e bandeira.",
      "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/serie-historica-de-precos-de-combustiveis"),
 
-    ("ANP - Vendas de derivados de petróleo e biocombustíveis. Base de apoio (volume por UF e produto).",
-     "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/vendas-de-derivados-de-petroleo-e-biocombustiveis"),
+    ("IBGE / SIDRA - PNAD Contínua, tabela 5437. Rendimento médio mensal por UF (DF e GO), "
+     "usado no cálculo do peso do combustível na renda.",
+     "https://sidra.ibge.gov.br/tabela/5437"),
 
     ("IBGE / SIDRA - IPCA, tabela 1737. Base de apoio (deflator dos preços).",
      "https://sidra.ibge.gov.br/tabela/1737"),
+
+    ("ANP - Vendas de derivados de petróleo e biocombustíveis. Base de apoio "
+     "(volume por UF e produto).",
+     "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/vendas-de-derivados-de-petroleo-e-biocombustiveis"),
 ]
 
 
