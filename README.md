@@ -14,6 +14,7 @@ Atividades avaliativas da disciplina, Prof. Bruno Miranda.
 | [DataLab 4-B1](datalab4/) | Série histórica do World Bank Open Data | [PDF](datalab4/entrega/) |
 | [DataLab 5-B1](datalab5/) | Valor Presente com Python | [PDF](datalab5/entrega/) · [código](datalab5/viabilidade_valor_presente.py) |
 | [DataLab 6-B1](datalab6/) | VPL e TIR com Python | [PDF](datalab6/entrega/) · [código](datalab6/viabilidade_vpl_tir.py) |
+| [DataLab 7-B2](datalab7/) | Análise financeira, custos e receitas da firma | [PDF](datalab7/entrega/) · [dashboard](datalab7/imagens/) |
 | [Pré-projeto](preprojeto/) | Avaliação Continuada — escopo do projeto aplicado final | [PDF](preprojeto/entrega/) |
 
 Cada pasta tem um `README.md` com o detalhe da atividade, as análises construídas e o
@@ -35,6 +36,9 @@ Tudo o que está em `datalab3/` e `datalab4/` é reproduzível a partir dos dado
 | `scripts/08_renderiza_prints_labs.py` | Renderiza os prints de código e console dos DataLabs 5 e 6 |
 | `scripts/09_gera_entrega_datalab5.py` | Monta a entrega do DataLab 5 |
 | `scripts/10_gera_entrega_datalab6.py` | Monta a entrega do DataLab 6 |
+| `scripts/11_trata_dados_datalab7.py` | Trata o dataset financeiro do DataLab 7 (Unpivot, número, data) |
+| `scripts/12_renderiza_dashboard_datalab7.py` | Gera as 7 páginas do dashboard do DataLab 7 |
+| `scripts/13_gera_entrega_datalab7.py` | Preenche o documento da tarefa do DataLab 7 |
 | `scripts/entrega.py` | Módulo comum: preenche o template `.docx` e converte para PDF |
 
 ### Dependências
@@ -59,4 +63,7 @@ python3 datalab6/viabilidade_vpl_tir.py
 python3 scripts/08_renderiza_prints_labs.py
 python3 scripts/09_gera_entrega_datalab5.py
 python3 scripts/10_gera_entrega_datalab6.py
+python3 scripts/11_trata_dados_datalab7.py
+python3 scripts/12_renderiza_dashboard_datalab7.py
+python3 scripts/13_gera_entrega_datalab7.py
 ```
