@@ -60,3 +60,7 @@ python3 scripts/08_renderiza_prints_labs.py
 python3 scripts/09_gera_entrega_datalab5.py
 python3 scripts/10_gera_entrega_datalab6.py
 ```
+
+## DataLab 8 para Lucas Fiche Ungarelli Borges
+
+A [versão de Lucas, RA 2021068](datalab8_lucas/), usa APINFO 2025 com Paraná, Rio Grande do Sul e Santa Catarina, e quatro cargos de desenvolvimento de software. Inclui PDF, Word, dashboard, dataset e scripts próprios.

@@ -1,0 +1,19 @@
+{
+  "linhas": 664,
+  "valores_validos": 656,
+  "valores_ausentes": 8,
+  "chaves_duplicadas": 0,
+  "localidades": [
+    "BR",
+    "PR",
+    "RS",
+    "SC"
+  ],
+  "pares_brasil": 81,
+  "comparacoes_estaduais": 24,
+  "normalizacoes": {
+    "Phyton": "Python",
+    "Java Script": "JavaScript"
+  },
+  "regra": "Vazios preservados; BR não é somado aos estados; estágio identificado como bolsa."
+}
