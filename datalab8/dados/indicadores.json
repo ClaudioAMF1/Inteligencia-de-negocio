@@ -1,0 +1,269 @@
+{
+  "ano_pesquisa": 2025,
+  "perfis_brasil": 83,
+  "referencias_brasil_validas": 164,
+  "referencias_brasil_ausentes": 2,
+  "media_referencias_brasil": 8535.481707317073,
+  "media_sem_bolsa_estagio": 8577.067484662577,
+  "media_clt_coluna_fonte": 7445.903614457831,
+  "media_pj": 9651.962962962964,
+  "pares_clt_pj": 81,
+  "ganho_pj_medio_pct": 27.52740513439945,
+  "media_clt_pares": 7582.79012345679,
+  "media_pj_pares": 9651.962962962964,
+  "razao_das_medias_pares_pct": 27.287750363884445,
+  "lider": {
+    "perfil": "Gerente de TI",
+    "CLT": 18803.0,
+    "PJ": 21007.0,
+    "diferenca_brl": 2204.0,
+    "ganho_pj_pct": 11.721533797798234,
+    "media_perfil_brl": 19905.0
+  },
+  "maior_referencia": {
+    "ano_pesquisa": 2025,
+    "uf": "BR",
+    "localidade": "Brasil",
+    "cargo": "Gerente de TI",
+    "especialidade": "",
+    "perfil": "Gerente de TI",
+    "vinculo_fonte": "PJ",
+    "natureza": "remuneracao",
+    "salario_mensal_brl": 21007.0,
+    "situacao": "publicado",
+    "valor_original": "21.007",
+    "especialidade_original": "",
+    "linha_fonte": 66,
+    "fonte_url": "https://www.apinfo2.com/apinfo/informacao/p25sal-br.cfm"
+  },
+  "menor_referencia": {
+    "ano_pesquisa": 2025,
+    "uf": "BR",
+    "localidade": "Brasil",
+    "cargo": "Estagiário",
+    "especialidade": "",
+    "perfil": "Estagiário",
+    "vinculo_fonte": "CLT",
+    "natureza": "bolsa_estagio",
+    "salario_mensal_brl": 1757.0,
+    "situacao": "publicado",
+    "valor_original": "1.757",
+    "especialidade_original": "",
+    "linha_fonte": 61,
+    "fonte_url": "https://www.apinfo2.com/apinfo/informacao/p25sal-br.cfm"
+  },
+  "menor_sem_bolsa": {
+    "ano_pesquisa": 2025,
+    "uf": "BR",
+    "localidade": "Brasil",
+    "cargo": "Assistente de Informática",
+    "especialidade": "",
+    "perfil": "Assistente de Informática",
+    "vinculo_fonte": "CLT",
+    "natureza": "remuneracao",
+    "salario_mensal_brl": 2047.0,
+    "situacao": "publicado",
+    "valor_original": "2.047",
+    "especialidade_original": "",
+    "linha_fonte": 47,
+    "fonte_url": "https://www.apinfo2.com/apinfo/informacao/p25sal-br.cfm"
+  },
+  "maior_base_coletada": {
+    "ano_pesquisa": 2025,
+    "uf": "SP",
+    "localidade": "São Paulo",
+    "cargo": "Gerente de TI",
+    "especialidade": "",
+    "perfil": "Gerente de TI",
+    "vinculo_fonte": "PJ",
+    "natureza": "remuneracao",
+    "salario_mensal_brl": 22185.0,
+    "situacao": "publicado",
+    "valor_original": "22.185",
+    "especialidade_original": "",
+    "linha_fonte": 66,
+    "fonte_url": "https://www.apinfo2.com/apinfo/informacao/p25sal-sp.cfm"
+  },
+  "menor_base_coletada": {
+    "ano_pesquisa": 2025,
+    "uf": "MG",
+    "localidade": "Minas Gerais",
+    "cargo": "Estagiário",
+    "especialidade": "",
+    "perfil": "Estagiário",
+    "vinculo_fonte": "CLT",
+    "natureza": "bolsa_estagio",
+    "salario_mensal_brl": 1555.0,
+    "situacao": "publicado",
+    "valor_original": "1.555",
+    "especialidade_original": "",
+    "linha_fonte": 61,
+    "fonte_url": "https://www.apinfo2.com/apinfo/informacao/p25sal-mg.cfm"
+  },
+  "top10": [
+    {
+      "perfil": "Gerente de TI",
+      "CLT": 18803.0,
+      "PJ": 21007.0,
+      "diferenca_brl": 2204.0,
+      "ganho_pj_pct": 11.721533797798234,
+      "media_perfil_brl": 19905.0
+    },
+    {
+      "perfil": "Cientista de dados",
+      "CLT": 14525.0,
+      "PJ": 18322.0,
+      "diferenca_brl": 3797.0,
+      "ganho_pj_pct": 26.14113597246128,
+      "media_perfil_brl": 16423.5
+    },
+    {
+      "perfil": "Gerente de Projetos PMO",
+      "CLT": 14488.0,
+      "PJ": 16703.0,
+      "diferenca_brl": 2215.0,
+      "ganho_pj_pct": 15.288514632799565,
+      "media_perfil_brl": 15595.5
+    },
+    {
+      "perfil": "Agile Master",
+      "CLT": 14197.0,
+      "PJ": 16272.0,
+      "diferenca_brl": 2075.0,
+      "ganho_pj_pct": 14.615763893780386,
+      "media_perfil_brl": 15234.5
+    },
+    {
+      "perfil": "Consultor ERP",
+      "CLT": 12168.0,
+      "PJ": 18002.0,
+      "diferenca_brl": 5834.0,
+      "ganho_pj_pct": 47.945430637738326,
+      "media_perfil_brl": 15085.0
+    },
+    {
+      "perfil": "Agile Coach",
+      "CLT": 13899.0,
+      "PJ": 15996.0,
+      "diferenca_brl": 2097.0,
+      "ganho_pj_pct": 15.087416360889282,
+      "media_perfil_brl": 14947.5
+    },
+    {
+      "perfil": "Coordenador de projetos",
+      "CLT": 12865.0,
+      "PJ": 16164.0,
+      "diferenca_brl": 3299.0,
+      "ganho_pj_pct": 25.64321803342402,
+      "media_perfil_brl": 14514.5
+    },
+    {
+      "perfil": "Lider de Projetos",
+      "CLT": 12053.0,
+      "PJ": 16175.0,
+      "diferenca_brl": 4122.0,
+      "ganho_pj_pct": 34.19895461710778,
+      "media_perfil_brl": 14114.0
+    },
+    {
+      "perfil": "Lider Técnico",
+      "CLT": 12171.0,
+      "PJ": 16020.0,
+      "diferenca_brl": 3849.0,
+      "ganho_pj_pct": 31.624352970175007,
+      "media_perfil_brl": 14095.5
+    },
+    {
+      "perfil": "Gerente de Infraestrutura",
+      "CLT": 12902.0,
+      "PJ": 15061.0,
+      "diferenca_brl": 2159.0,
+      "ganho_pj_pct": 16.733839714772913,
+      "media_perfil_brl": 13981.5
+    }
+  ],
+  "ganhos_top5": [
+    {
+      "perfil": "Analista de Negócios",
+      "CLT": 7923.0,
+      "PJ": 11731.0,
+      "diferenca_brl": 3808.0,
+      "ganho_pj_pct": 48.062602549539314,
+      "media_perfil_brl": 9827.0
+    },
+    {
+      "perfil": "Consultor ERP",
+      "CLT": 12168.0,
+      "PJ": 18002.0,
+      "diferenca_brl": 5834.0,
+      "ganho_pj_pct": 47.945430637738326,
+      "media_perfil_brl": 15085.0
+    },
+    {
+      "perfil": "Analista de testes",
+      "CLT": 5618.0,
+      "PJ": 8270.0,
+      "diferenca_brl": 2652.0,
+      "ganho_pj_pct": 47.205411178355284,
+      "media_perfil_brl": 6944.0
+    },
+    {
+      "perfil": "Analista de sistemas - Java",
+      "CLT": 10264.0,
+      "PJ": 15036.0,
+      "diferenca_brl": 4772.0,
+      "ganho_pj_pct": 46.492595479345276,
+      "media_perfil_brl": 12650.0
+    },
+    {
+      "perfil": "Desenvolvedor Full-Stack",
+      "CLT": 9633.0,
+      "PJ": 13701.0,
+      "diferenca_brl": 4068.0,
+      "ganho_pj_pct": 42.229834942385544,
+      "media_perfil_brl": 11667.0
+    }
+  ],
+  "ganhos_bottom5": [
+    {
+      "perfil": "Analista de Suporte - Linux",
+      "CLT": 3651.0,
+      "PJ": 3903.0,
+      "diferenca_brl": 252.0,
+      "ganho_pj_pct": 6.902218570254726,
+      "media_perfil_brl": 3777.0
+    },
+    {
+      "perfil": "Analista de monitoramento",
+      "CLT": 2938.0,
+      "PJ": 3254.0,
+      "diferenca_brl": 316.0,
+      "ganho_pj_pct": 10.755616065350582,
+      "media_perfil_brl": 3096.0
+    },
+    {
+      "perfil": "Gerente de TI",
+      "CLT": 18803.0,
+      "PJ": 21007.0,
+      "diferenca_brl": 2204.0,
+      "ganho_pj_pct": 11.721533797798234,
+      "media_perfil_brl": 19905.0
+    },
+    {
+      "perfil": "Gerente de Contas",
+      "CLT": 9826.0,
+      "PJ": 11017.0,
+      "diferenca_brl": 1191.0,
+      "ganho_pj_pct": 12.120903724811715,
+      "media_perfil_brl": 10421.5
+    },
+    {
+      "perfil": "Analista de Suporte - Mainframe",
+      "CLT": 6078.0,
+      "PJ": 6909.0,
+      "diferenca_brl": 831.0,
+      "ganho_pj_pct": 13.67226061204343,
+      "media_perfil_brl": 6493.5
+    }
+  ]
+}

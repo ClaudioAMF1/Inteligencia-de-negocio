@@ -1,0 +1,38 @@
+{
+  "data_coleta": "2026-10-24",
+  "pesquisa": "APINFO 2025",
+  "coleta_pesquisa": "agosto a setembro de 2025",
+  "participantes_pesquisa_inteira": 26174,
+  "fontes": [
+    {
+      "uf": "BR",
+      "arquivo": "brutos/p25sal-br.html",
+      "url": "https://www.apinfo2.com/apinfo/informacao/p25sal-br.cfm",
+      "sha256": "03316dbbc4637ed93a4f98b88db40123cb02baac30e453988c48c1bdb1053f1b",
+      "linhas_perfis": 83
+    },
+    {
+      "uf": "SP",
+      "arquivo": "brutos/p25sal-sp.html",
+      "url": "https://www.apinfo2.com/apinfo/informacao/p25sal-sp.cfm",
+      "sha256": "a36e5eb9dd59c531df764ac444633c3d3809d5cafca99524708609073953755a",
+      "linhas_perfis": 83
+    },
+    {
+      "uf": "RJ",
+      "arquivo": "brutos/p25sal-rj.html",
+      "url": "https://www.apinfo2.com/apinfo/informacao/p25sal-rj.cfm",
+      "sha256": "e9946c082f12281eeef188cfa13b56d5bbc8dcbc0352088eaa6605bbb54d5b72",
+      "linhas_perfis": 83
+    },
+    {
+      "uf": "MG",
+      "arquivo": "brutos/p25sal-mg.html",
+      "url": "https://www.apinfo2.com/apinfo/informacao/p25sal-mg.cfm",
+      "sha256": "18c66fb86adb9db585782103606942dbc22e6b745d6dabfd8c771c7391c6e42c",
+      "linhas_perfis": 83
+    }
+  ],
+  "sumario_url": "https://www.apinfo2.com/apinfo/informacao/p25sumario.cfm",
+  "nota": "Dados agregados publicados; não há microdados nem contagens por cargo/vínculo."
+}
