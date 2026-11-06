@@ -1,7 +1,7 @@
 """Monta os relatórios do DataLab 9-B2 no template oficial enviado pelo aluno.
 
 Pré-requisito: executar os scripts R em cada pasta, gerando console.txt e
-resultados.csv. As imagens são renderizações do código e da saída real, sem
+resultados.csv. As imagens são renderizações do código e da saída do programa, sem
 simular uma captura do RStudio. Conversão e inspeção visual são etapas externas.
 """
 import csv
@@ -34,7 +34,7 @@ def br(value, digits=2):
     return f"{value:,.{digits}f}".replace(",", "@").replace(".", ",").replace("@", ".")
 
 
-def visual_text(lines, path, title, first_line=None, code=False):
+def visual_text(lines, path, title, first_line=None, code=False, accent="#102C41"):
     """Renderiza texto legível; a origem é sempre o arquivo entregue."""
     width = 1560
     font = ImageFont.truetype("DejaVuSansMono.ttf", 32)
@@ -43,7 +43,7 @@ def visual_text(lines, path, title, first_line=None, code=False):
     step = 43
     image = Image.new("RGB", (width, 112 + step * len(lines)), "white")
     draw = ImageDraw.Draw(image)
-    draw.rectangle((0, 0, width, 78), fill="#102C41")
+    draw.rectangle((0, 0, width, 78), fill=accent)
     draw.text((32, 21), title, font=title_font, fill="white")
     for i, line in enumerate(lines):
         y = 94 + i * step
@@ -151,6 +151,8 @@ def hyperlink(doc, title, url):
 def build(folder):
     base = ROOT / folder
     p = json.loads((base/"perfil.json").read_text())
+    if p["sigla"] == "SC":
+        return build_lucas(base, p)
     d = p["totais"]
     with (base/"resultados.csv").open(encoding="utf-8") as f:
         results = list(csv.DictReader(f))
@@ -162,7 +164,7 @@ def build(folder):
     images = base/"imagens"
     visual_text(code[:42], images/"codigo_1.png", "Código R | dados, validação e fórmulas", 1, True)
     visual_text(code[42:], images/"codigo_2.png", "Código R | execução e apresentação", 43, True)
-    visual_text(console, images/"console.png", "Saída real de Rscript | DataLab 9 B2")
+    visual_text(console, images/"console.png", "Resultados da execução em R")
 
     doc = Document(TEMPLATE)
     entrega.ALUNO, entrega.MATRICULA = p["nome"], p["matricula"]
@@ -217,7 +219,7 @@ def build(folder):
          "resposta original da API permitem conferir os valores utilizados.", 10)
 
     heading(doc, "Saída da execução", new_page=True)
-    picture(doc, images/"console.png", "Figura 3. Texto da saída real de Rscript 4.3.3, renderizado para leitura no relatório.")
+    picture(doc, images/"console.png", "Figura 3. Resultados obtidos na execução do programa em R.")
     if p["sigla"] == "DF":
         interpretation = (
             f'No Distrito Federal, {br(rates[0])}% da população em idade de trabalhar '
@@ -291,6 +293,168 @@ def build(folder):
     name=f'DataLab_9B2_{"Claudio" if p["sigla"]=="DF" else "Lucas"}_{p["matricula"]}'
     doc.save(dest/f"{name}.docx")
     print(dest/f"{name}.docx")
+
+
+def build_lucas(base, profile):
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.ticker import PercentFormatter
+
+    d = profile["totais"]
+    with (base / "resultados.csv").open(encoding="utf-8") as stream:
+        rows = list(csv.DictReader(stream))
+    rates = [float(row["percentual"]) for row in rows]
+    code = (base / "indicadores_mercado_trabalho.R").read_text().splitlines()
+    console = (base / "console.txt").read_text().splitlines()
+    images = base / "imagens"
+    accent = "#285C67"
+    visual_text(code[:34], images / "codigo_1.png",
+                "Leitura do CSV e composição das taxas", 1, True, accent)
+    visual_text(code[34:], images / "codigo_2.png",
+                "Tabela de resultados e exportação", 35, True, accent)
+    visual_text(console, images / "console.png",
+                "Resultados da execução", accent=accent)
+
+    fig, ax = plt.subplots(figsize=(9, 3.6))
+    series = [
+        ("População em idade de trabalhar", rates[0],
+         "Na força de trabalho", "Fora da força de trabalho"),
+        ("Força de trabalho", rates[1], "Ocupados", "Desocupados"),
+        ("Pessoas ocupadas", rates[4], "Formais", "Informais"),
+    ]
+    for index, (label, left, name_left, name_right) in enumerate(series):
+        y = 2 - index
+        ax.barh(y, left, height=.30, color=accent)
+        ax.barh(y, 100-left, left=left, height=.30, color="#D7E3E6")
+        ax.text(0, y+.23, label, fontsize=10, weight="bold", va="bottom")
+        ax.text(0, y-.23, f"{name_left}: {br(left)}%", fontsize=9, va="top")
+        ax.text(100, y-.23, f"{name_right}: {br(100-left)}%",
+                fontsize=9, va="top", ha="right")
+    ax.set_xlim(0, 100)
+    ax.set_ylim(-.6, 2.7)
+    ax.set_yticks([])
+    ax.xaxis.set_major_formatter(PercentFormatter())
+    ax.tick_params(axis="both", length=0, labelsize=9)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+    fig.tight_layout(pad=.7)
+    fig.savefig(images / "composicao_mercado.png", dpi=220)
+    plt.close(fig)
+
+    doc = Document(TEMPLATE)
+    entrega.ALUNO = profile["nome"]
+    entrega.MATRICULA = profile["matricula"]
+    entrega._preenche_tabelas(doc, "DataLab 9-B2 - Indicadores do mercado de trabalho")
+    marker = next(p for p in doc.paragraphs if p.text.strip() == "Solução do DevLab")._p
+    remove = False
+    for child in list(doc._element.body):
+        if child is marker:
+            remove = True
+        if remove and child.tag != qn("w:sectPr"):
+            doc._element.body.remove(child)
+    for name in ["Normal", "Heading 1", "Heading 2"]:
+        doc.styles[name].font.name = "Arial"
+        doc.styles[name].font.color.rgb = RGBColor(0, 0, 0)
+    doc.core_properties.author = profile["nome"]
+    doc.core_properties.title = "DataLab 9 B2 Mercado de trabalho em Santa Catarina"
+    doc.core_properties.subject = "Lucas Fiche Ungarelli Borges | RA 2021068"
+
+    heading(doc, "Solução do DataLab")
+    para(doc, "Santa Catarina no quarto trimestre de 2025", 12, True)
+    para(doc, "O objetivo é calcular os indicadores de participação, ocupação, "
+         "desocupação, informalidade e formalização. A análise usa os totais da "
+         "PNAD Contínua para pessoas com 14 anos ou mais, de ambos os sexos.")
+    table(doc, ["Variável do arquivo", "Grupo representado", "Mil pessoas"], [
+        ("pia", "População em idade de trabalhar", br(d["pia"], 0)),
+        ("ft", "Força de trabalho", br(d["ft"], 0)),
+        ("ocupados", "Pessoas com ocupação", br(d["ocupados"], 0)),
+        ("desocupados", "Pessoas desocupadas", br(d["desocupados"], 0)),
+        ("informais", "Ocupados em situação de informalidade", br(d["informais"], 0)),
+    ], [1.30, 3.65, 1.25])
+    para(doc, "Como os dados entram no cálculo", 11, True)
+    para(doc, "O programa lê dados_pnad.csv e organiza uma tabela com uma linha "
+         "por indicador. Cada linha guarda seu numerador, denominador e fórmula. "
+         "O percentual é obtido pela mesma operação em toda a tabela: "
+         "100 × numerador / denominador.")
+    para(doc, "A conferência inicial verifica se há uma única linha de dados, se "
+         "as contagens são numéricas e se os grupos são compatíveis. Também "
+         "verifica se ocupados e desocupados recompõem a força de trabalho. "
+         "A tolerância é de mil pessoas, por causa do arredondamento da fonte.")
+    para(doc, "Duas medidas derivadas ajudam na leitura do recorte: "
+         f'{br(d["pia"]-d["ft"],0)} mil pessoas estavam fora da força de trabalho '
+         f'e {br(d["ocupados"]-d["informais"],0)} mil ocupados compõem o grupo formal, '
+         "calculado pela diferença entre ocupados e informais.")
+    para(doc, "Fonte e unidade", 11, True)
+    para(doc, "SIDRA 4093, UF 42, período 202504, sexo Total. Os números estão em "
+         "mil pessoas e já foram expandidos pelo IBGE. O arquivo de entrada mantém "
+         "os totais publicados, sem aplicar pesos novamente. Consulta em 06/11/2026.", 10)
+
+    heading(doc, "Resultados do recorte catarinense", new_page=True)
+    picture(doc, images / "console.png",
+            "Figura 1. Console com os componentes e os percentuais de cada indicador.")
+    para(doc, "Ocupação e participação", 11, True)
+    para(doc, f'A participação foi de {br(rates[0])}%. Entre as pessoas na força '
+         f'de trabalho, {br(rates[1])}% estavam ocupadas e {br(rates[2])}% '
+         "desocupadas. Já o nível de ocupação usa toda a população em idade de "
+         f'trabalhar como base e ficou em {br(rates[5])}%.')
+    para(doc, "Informalidade e formalização", 11, True)
+    para(doc, f'Dos {br(d["ocupados"],0)} mil ocupados, {br(d["informais"],0)} mil '
+         f'estavam na informalidade. Essa razão resulta em {br(rates[3])}%. '
+         f'O complemento formal corresponde a {br(rates[4])}% dos ocupados. '
+         "Esses percentuais não têm como base a população total do estado.")
+    para(doc, "Os percentuais usam contagens publicadas arredondadas. Por isso, "
+         "podem diferir ligeiramente das taxas oficiais calculadas pelo IBGE com "
+         "valores não arredondados.", 10)
+
+    heading(doc, "Implementação em R", new_page=True)
+    picture(doc, images / "codigo_1.png",
+            "Figura 2. Importação da base, validações e montagem da tabela de taxas.")
+    para(doc, "A função montar_taxas recebe um data.frame e devolve os componentes "
+         "de cada indicador junto com o percentual. Manter as contagens na tabela "
+         "facilita conferir de onde veio cada resultado.", 10)
+
+    heading(doc, "Apresentação e exportação", new_page=True)
+    picture(doc, images / "codigo_2.png",
+            "Figura 3. Formatação da tabela, identificação do aluno e gravação do CSV.")
+    para(doc, "A variável exibicao contém os percentuais com duas casas decimais "
+         "para leitura no console. O arquivo resultados.csv é gravado a partir "
+         "de resultado, preservando a precisão do cálculo.", 10)
+    para(doc, "Para executar, mantenha o código e dados_pnad.csv na mesma pasta. "
+         "No RStudio, defina essa pasta como diretório de trabalho e execute "
+         "indicadores_mercado_trabalho.R. O programa utiliza apenas R base.", 10)
+
+    heading(doc, "Descrição técnica e interpretação", new_page=True)
+    picture(doc, images / "composicao_mercado.png",
+            "Figura 4. Composição percentual de três grupos distintos em Santa Catarina.")
+    para(doc, "O que os resultados mostram", 11, True)
+    para(doc, f'A desocupação de {br(rates[2])}% é uma parcela pequena da força '
+         "de trabalho. Isso não significa que quase toda a população em idade "
+         f'de trabalhar estivesse ocupada: {br(100-rates[0])}% estava fora da força '
+         "de trabalho. As duas barras têm bases diferentes.")
+    para(doc, "Técnicas utilizadas", 11, True)
+    para(doc, "A implementação combina leitura de CSV, validação de uma linha de "
+         "dados e operações entre colunas de um data.frame. A separação entre "
+         "resultado e exibicao evita que o arredondamento usado no console altere "
+         "os valores exportados. Os testes também cobrem arquivo sem registros "
+         "e arquivo com mais de um recorte.")
+    para(doc, "Conclusão do exercício", 11, True)
+    para(doc, "A leitura dos indicadores depende da base de comparação. "
+         "Participação usa a população em idade de trabalhar; ocupação e "
+         "desocupação usam a força de trabalho; informalidade e formalização "
+         "consideram somente os ocupados. Somar taxas de bases diferentes não "
+         "produz uma divisão válida da população.")
+    para(doc, "Definições e referências", 11, True)
+    para(doc, "O grau de formalização foi definido como 100% menos a informalidade. "
+         "A proxy do IBGE inclui empregados privados e domésticos sem carteira, "
+         "empregadores e trabalhadores por conta própria sem CNPJ e familiares "
+         "auxiliares. Portanto, formalização não se resume à carteira assinada.", 10)
+    hyperlink(doc, "IBGE SIDRA 4093 — totais do mercado de trabalho", SIDRA)
+    hyperlink(doc, "PNAD Contínua — conceitos de taxa e nível de ocupação, p. 18", NOTAS)
+    hyperlink(doc, "IBGE — divulgação e critério de informalidade do quarto trimestre", RELEASE)
+    dest = base / "entrega" / "DataLab_9B2_Lucas_2021068.docx"
+    doc.save(dest)
+    print(dest)
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@
 **Matrícula:** 2021068  
 **Recorte:** Santa Catarina, 4º trimestre de 2025, sexo total, pessoas de 14 anos ou mais.
 
-Versão do laboratório com dados de Santa Catarina, código em R, saída real da
+Versão do laboratório com dados de Santa Catarina, código em R, resultados da
 execução e interpretação dos resultados no template oficial enviado.
 
 ## Entrega
@@ -12,7 +12,7 @@ execução e interpretação dos resultados no template oficial enviado.
 - [Relatório em PDF](entrega/DataLab_9B2_Lucas_2021068.pdf)
 - [Relatório editável em Word](entrega/DataLab_9B2_Lucas_2021068.docx)
 - [Código em R](indicadores_mercado_trabalho.R)
-- [Dados de entrada](dados_pnad.csv), [resultados](resultados.csv) e [console real](console.txt)
+- [Dados de entrada](dados_pnad.csv), [resultados](resultados.csv) e [console](console.txt)
 - [Resposta original do SIDRA](../datalab9/fontes/sidra_4093_2025t4_df_sc.json) e [proveniência](../datalab9/fontes/proveniencia.json)
 
 ## Fórmulas e resultados
@@ -42,8 +42,8 @@ publicados são arredondados, o que pode produzir diferenças pequenas em relaç
 
 ## Executar
 
-Foi utilizado R 4.3.3, sem pacotes adicionais. O script contém os totais oficiais
-e pode ser executado sem conexão à internet. A partir da raiz do repositório:
+Foi utilizado R 4.3.3, sem pacotes adicionais. O script lê `dados_pnad.csv`
+e pode ser executado sem conexão à internet. Mantenha o CSV e o código na mesma pasta. A partir da raiz do repositório:
 
 ```bash
 cd datalab9_lucas
@@ -51,13 +51,21 @@ Rscript --vanilla indicadores_mercado_trabalho.R > console.txt
 ```
 
 No RStudio, abra o arquivo `.R`, use **Session → Set Working Directory → To Source
-File Location** e clique em **Source**. O script imprime os resultados e grava
-`resultados.csv` no diretório de trabalho. As imagens do relatório mostram o
-código renderizado e a saída real de Rscript, sem simular a interface do RStudio.
+File Location** e clique em **Source**. O script imprime uma tabela com numeradores, denominadores e taxas, e grava
+`resultados.csv` no diretório de trabalho. A função `montar_taxas` recebe um
+`data.frame` de uma linha e preserva os componentes de cada percentual.
+A formatação com duas casas decimais é aplicada somente à exibição.
 
-Da raiz do repositório, `Rscript --vanilla scripts/testa_datalab9.R` executa 19
-checagens deste recorte e 19 do Distrito Federal. A [documentação de reprodução](../datalab9/README.md#reproduzir-as-duas-entregas)
+Da raiz do repositório, `Rscript --vanilla scripts/testa_datalab9.R` executa 23
+checagens deste recorte e 19 do Distrito Federal, 42 no total. A [documentação de reprodução](../datalab9/README.md#reproduzir-as-duas-entregas)
 detalha como regenerar os relatórios.
+
+## Organização do relatório
+
+O documento apresenta os dados e o método, o console com interpretação, duas
+páginas de código e a descrição técnica. O gráfico final de composição mostra
+três bases distintas: população em idade de trabalhar, força de trabalho e
+pessoas ocupadas. Cada barra soma 100% dentro do seu próprio grupo.
 
 ## Fontes
 

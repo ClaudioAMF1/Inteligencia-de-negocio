@@ -1,7 +1,7 @@
-"indicador","formula","percentual"
-"Participação na força de trabalho","FT / PIA",67.9094540612517
-"Taxa de ocupação","PO / FT",97.843137254902
-"Taxa de desocupação","PD / FT",2.15686274509804
-"Taxa de informalidade","PI / PO",25.7181028724115
-"Grau de formalização","(PO - PI) / PO",74.2818971275885
-"Nível da ocupação (complementar)","PO / PIA",66.4447403462051
+"indicador","formula","numerador","denominador","percentual"
+"Participação","FT / PIA",4590,6759,67.9094540612517
+"Ocupação","PO / FT",4491,4590,97.843137254902
+"Desocupação","PD / FT",99,4590,2.15686274509804
+"Informalidade","PI / PO",1155,4491,25.7181028724115
+"Formalização","(PO - PI) / PO",3336,4491,74.2818971275885
+"Nível de ocupação","PO / PIA",4491,6759,66.4447403462051

@@ -13,7 +13,7 @@ atividade, com identificação na capa, no cabeçalho do código e na saída do 
 - [Relatório em PDF](entrega/DataLab_9B2_Claudio_2321070.pdf)
 - [Relatório editável em Word](entrega/DataLab_9B2_Claudio_2321070.docx)
 - [Código em R](indicadores_mercado_trabalho.R)
-- [Dados de entrada](dados_pnad.csv), [resultados](resultados.csv) e [console real](console.txt)
+- [Dados de entrada](dados_pnad.csv), [resultados](resultados.csv) e [console](console.txt)
 - [Resposta original do SIDRA](fontes/sidra_4093_2025t4_df_sc.json) e [proveniência](fontes/proveniencia.json)
 
 ## Fórmulas e resultados
@@ -58,8 +58,8 @@ Rscript --vanilla indicadores_mercado_trabalho.R > console.txt
 No RStudio, abra o arquivo `.R`, defina a pasta do script como diretório de
 trabalho em **Session → Set Working Directory → To Source File Location** e clique
 em **Source**. O script imprime os resultados e grava `resultados.csv` no diretório
-de trabalho. As imagens do relatório são renderizações do código e da execução
-real de Rscript; não são capturas da interface do RStudio.
+de trabalho. As imagens do relatório apresentam o código e o console obtido na execução.
+Os títulos foram padronizados como resultados da execução em R.
 
 Para testar, execute da raiz do repositório:
 
@@ -67,14 +67,14 @@ Para testar, execute da raiz do repositório:
 Rscript --vanilla scripts/testa_datalab9.R
 ```
 
-São 19 checagens por recorte, 38 no total. Incluem exemplo com resposta conhecida,
+São 19 checagens do Distrito Federal e 23 de Santa Catarina, 42 no total. Incluem exemplo com resposta conhecida,
 valores ausentes ou infinitos, totais negativos, denominadores nulos, consistência
 dos grupos, tolerância de arredondamento, extremos de informalidade e comparação
 com as taxas de referência publicadas pelo IBGE.
 
 ## Reproduzir as duas entregas
 
-Os scripts Python de preparação e montagem usam `python-docx` e `Pillow`. A
+Os scripts Python de preparação e montagem usam `python-docx`, `Pillow` e `matplotlib`. A
 conversão para PDF requer LibreOffice. O template desta atividade foi preservado
 em `fontes/template_aluno.docx`, sem alterar o template das atividades anteriores.
 
@@ -88,8 +88,10 @@ soffice --headless --convert-to pdf --outdir datalab9/entrega datalab9/entrega/D
 soffice --headless --convert-to pdf --outdir datalab9_lucas/entrega datalab9_lucas/entrega/DataLab_9B2_Lucas_2021068.docx
 ```
 
-O script de preparação lê a resposta arquivada da API. Ele regenera as entradas,
-os perfis e os scripts R, sem substituir a fonte por valores mais recentes.
+O script de preparação lê a resposta arquivada da API. Ele regenera as entradas e
+os perfis, sem substituir a fonte por valores mais recentes. As implementações
+R ficam nos próprios arquivos: vetor nomeado no DF e leitura de CSV seguida de
+uma tabela de numeradores e denominadores em SC.
 
 ## Fontes
 

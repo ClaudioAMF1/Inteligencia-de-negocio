@@ -12,9 +12,12 @@ confere <- function(condicao) {
 falha <- function(expr) inherits(tryCatch(expr, error = identity), "error")
 for (pasta in c("datalab9", "datalab9_lucas")) {
   ambiente <- new.env()
+  file.copy(file.path(raiz, pasta, "dados_pnad.csv"),
+            "dados_pnad.csv", overwrite = TRUE)
   invisible(capture.output(sys.source(
     file.path(raiz, pasta, "indicadores_mercado_trabalho.R"), ambiente)))
-  calc <- ambiente$calcular_indicadores
+  calc <- if (pasta == "datalab9") ambiente$calcular_indicadores else
+    function(x) ambiente$montar_taxas(as.data.frame(as.list(x)))
   exemplo <- c(pia=1000, ft=600, ocupados=540, desocupados=60, informais=180)
   esperado <- c(60, 90, 10, 100/3, 200/3, 54)
   confere(max(abs(calc(exemplo)$percentual - esperado)) < 1e-10)
@@ -41,8 +44,10 @@ for (pasta in c("datalab9", "datalab9_lucas")) {
   x["informais"] <- x["ocupados"]
   confere(identical(calc(x)$percentual[4:5], c(100, 0)))
   entrada <- read.csv(file.path(raiz, pasta, "dados_pnad.csv"))
-  confere(identical(unname(ambiente$dados),
-                   as.numeric(entrada[1, names(ambiente$dados)])))
+  campos <- c("pia", "ft", "ocupados", "desocupados", "informais")
+  usados <- if (pasta == "datalab9") unname(ambiente$dados) else
+    as.numeric(ambiente$base[1, campos])
+  confere(identical(usados, as.numeric(entrada[1, campos])))
   r <- ambiente$resultado$percentual
   referencia <- if (pasta == "datalab9") c(67.1, 62.5, 6.8, 27.1)
                 else c(67.9, 66.4, 2.2, 25.7)
@@ -50,6 +55,13 @@ for (pasta in c("datalab9", "datalab9_lucas")) {
   confere(max(abs(r[c(1,6,3,4)] - referencia)) < 0.1)
   confere(abs(sum(r[2:3]) - 100) < 1e-10)
   confere(abs(sum(r[4:5]) - 100) < 1e-10)
+  if (pasta == "datalab9_lucas") {
+    confere(falha(ambiente$montar_taxas(entrada[FALSE, ])))
+    confere(falha(ambiente$montar_taxas(rbind(entrada, entrada))))
+    confere(all(ambiente$resultado$denominador > 0))
+    confere(max(abs(r - 100 * ambiente$resultado$numerador /
+                   ambiente$resultado$denominador)) < 1e-10)
+  }
   cat(pasta, ": cálculos, limites e dados oficiais conferidos.\n")
 }
 setwd(raiz)

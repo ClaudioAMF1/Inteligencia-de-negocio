@@ -1,29 +1,18 @@
-DATALAB 9-B2 | INDICADORES DO MERCADO DE TRABALHO
-Aluno: Lucas Fiche Ungarelli Borges 
-Matrícula: 2021068 
-Recorte: Santa Catarina | 4º trimestre de 2025 | sexo total
-Fonte: IBGE / PNAD Contínua / SIDRA 4093
-Ambiente: R version 4.3.3 (2024-02-29) 
+DATALAB 9-B2 - SANTA CATARINA
+Lucas Fiche Ungarelli Borges | RA 2021068
+PNAD Contínua | 4º trimestre de 2025 | 14 anos ou mais
 
-TOTAIS DE ENTRADA (mil pessoas)
-  pia                6759
-  ft                 4590
-  ocupados           4491
-  desocupados          99
-  informais          1155
-  formais*           3336
-* Formais calculados por PO - PI.
+INDICADOR               NUMERADOR / BASE       TAXA
+Participação           4590 / 6759      67,91%
+Ocupação               4491 / 4590      97,84%
+Desocupação              99 / 4590       2,16%
+Informalidade            1155 / 4491      25,72%
+Formalização           3336 / 4491      74,28%
+Nível de ocupação     4491 / 6759      66,44%
 
-INDICADORES (fórmulas multiplicadas por 100)
-Participação na força de trabalho   67,91 %
-Taxa de ocupação                    97,84 %
-Taxa de desocupação                  2,16 %
-Taxa de informalidade               25,72 %
-Grau de formalização                74,28 %
-Nível da ocupação (complementar)    66,44 %
-
-Checagens: totais coerentes; denominadores positivos.
-Ocupação + desocupação: 100,00 %
-Informalidade + formalização: 100,00 %
-Nota: percentuais recalculados sobre totais arredondados.
-Taxa de ocupação usa FT; nível da ocupação usa PIA.
+Contagens em mil pessoas. Fonte: IBGE, SIDRA 4093.
+Formais = ocupados - informais: 3336 mil pessoas.
+Fora da força de trabalho: 2169 mil pessoas.
+Ocupação e desocupação somam 100 %.
+Informalidade e formalização somam 100 %.
+O nível de ocupação usa PIA; a taxa de ocupação usa FT.
