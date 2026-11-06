@@ -1,0 +1,3 @@
+datalab9 : cálculos, limites e dados oficiais conferidos.
+datalab9_lucas : cálculos, limites e dados oficiais conferidos.
+38 checagens aprovadas.

@@ -14,6 +14,8 @@ Atividades avaliativas da disciplina, Prof. Bruno Miranda.
 | [DataLab 4-B1](datalab4/) | Série histórica do World Bank Open Data | [PDF](datalab4/entrega/) |
 | [DataLab 5-B1](datalab5/) | Valor Presente com Python | [PDF](datalab5/entrega/) · [código](datalab5/viabilidade_valor_presente.py) |
 | [DataLab 6-B1](datalab6/) | VPL e TIR com Python | [PDF](datalab6/entrega/) · [código](datalab6/viabilidade_vpl_tir.py) |
+| [DataLab 9-B2 · Claudio](datalab9/) | Indicadores da PNAD Contínua em R · Distrito Federal | [PDF](datalab9/entrega/DataLab_9B2_Claudio_2321070.pdf) · [código R](datalab9/indicadores_mercado_trabalho.R) |
+| [DataLab 9-B2 · Lucas](datalab9_lucas/) | Indicadores da PNAD Contínua em R · Santa Catarina | [PDF](datalab9_lucas/entrega/DataLab_9B2_Lucas_2021068.pdf) · [código R](datalab9_lucas/indicadores_mercado_trabalho.R) |
 | [Pré-projeto](preprojeto/) | Avaliação Continuada — escopo do projeto aplicado final | [PDF](preprojeto/entrega/) |
 
 Cada pasta tem um `README.md` com o detalhe da atividade, as análises construídas e o
@@ -35,6 +37,9 @@ Tudo o que está em `datalab3/` e `datalab4/` é reproduzível a partir dos dado
 | `scripts/08_renderiza_prints_labs.py` | Renderiza os prints de código e console dos DataLabs 5 e 6 |
 | `scripts/09_gera_entrega_datalab5.py` | Monta a entrega do DataLab 5 |
 | `scripts/10_gera_entrega_datalab6.py` | Monta a entrega do DataLab 6 |
+| `scripts/14_prepara_datalab9.py` | Extrai os dois recortes do SIDRA e prepara os scripts R |
+| `scripts/15_gera_entregas_datalab9.py` | Monta os dois relatórios do DataLab 9 no template enviado |
+| `scripts/testa_datalab9.R` | Valida fórmulas, entradas inválidas e consistência dos dados do DataLab 9 |
 | `scripts/entrega.py` | Módulo comum: preenche o template `.docx` e converte para PDF |
 
 ### Dependências

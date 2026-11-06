@@ -1,0 +1,29 @@
+DATALAB 9-B2 | INDICADORES DO MERCADO DE TRABALHO
+Aluno: Lucas Fiche Ungarelli Borges 
+Matrícula: 2021068 
+Recorte: Santa Catarina | 4º trimestre de 2025 | sexo total
+Fonte: IBGE / PNAD Contínua / SIDRA 4093
+Ambiente: R version 4.3.3 (2024-02-29) 
+
+TOTAIS DE ENTRADA (mil pessoas)
+  pia                6759
+  ft                 4590
+  ocupados           4491
+  desocupados          99
+  informais          1155
+  formais*           3336
+* Formais calculados por PO - PI.
+
+INDICADORES (fórmulas multiplicadas por 100)
+Participação na força de trabalho   67,91 %
+Taxa de ocupação                    97,84 %
+Taxa de desocupação                  2,16 %
+Taxa de informalidade               25,72 %
+Grau de formalização                74,28 %
+Nível da ocupação (complementar)    66,44 %
+
+Checagens: totais coerentes; denominadores positivos.
+Ocupação + desocupação: 100,00 %
+Informalidade + formalização: 100,00 %
+Nota: percentuais recalculados sobre totais arredondados.
+Taxa de ocupação usa FT; nível da ocupação usa PIA.

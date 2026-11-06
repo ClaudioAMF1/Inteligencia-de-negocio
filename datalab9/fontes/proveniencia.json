@@ -1,0 +1,17 @@
+{
+  "fonte": "IBGE / PNAD Contínua trimestral / SIDRA 4093",
+  "consulta": "https://apisidra.ibge.gov.br/values/t/4093/n3/53,42/v/1641,4088,4090,4092,4094,4723,4096,4097,4099,12466/p/202504/c2/6794",
+  "data_acesso": "2026-11-06",
+  "periodo": "202504",
+  "sexo": "6794 (Total)",
+  "unidade_contagens": "Mil pessoas",
+  "variaveis": {
+    "pia": "1641",
+    "ft": "4088",
+    "ocupados": "4090",
+    "desocupados": "4092",
+    "informais": "4723"
+  },
+  "sha256_resposta": "9149a05a9cd7fd8847cb93c51b8b2bde736c617ee691d72743d9e21f7c93be87",
+  "notas": "Estimativas já expandidas. Não aplicar pesos novamente. Os totais publicados são arredondados; as taxas recalculadas podem diferir na última casa das taxas divulgadas pelo IBGE."
+}
