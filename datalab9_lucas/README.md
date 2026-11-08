@@ -9,6 +9,11 @@ execução e interpretação dos resultados no template oficial enviado.
 
 ## Entrega
 
+Os dois relatórios mantêm os títulos originais “Solução do DevLab” e
+“Descrição técnica do laboratório”, seguidos das perguntas “Qual foi o objetivo
+do DevLab?”, “Quais foram as técnicas utilizadas?” e “O que você aprendeu?”.
+As diferenças ficam nos dados, código, respostas e análises.
+
 - [Relatório em PDF](entrega/DataLab_9B2_Lucas_2021068.pdf)
 - [Relatório editável em Word](entrega/DataLab_9B2_Lucas_2021068.docx)
 - [Código em R](indicadores_mercado_trabalho.R)
@@ -62,8 +67,8 @@ detalha como regenerar os relatórios.
 
 ## Organização do relatório
 
-O documento apresenta os dados e o método, o console com interpretação, duas
-páginas de código e a descrição técnica. O gráfico final de composição mostra
+O documento apresenta os dados e o método, duas páginas de código, o console
+com interpretação e a descrição técnica. O gráfico de composição mostra
 três bases distintas: população em idade de trabalhar, força de trabalho e
 pessoas ocupadas. Cada barra soma 100% dentro do seu próprio grupo.
 
