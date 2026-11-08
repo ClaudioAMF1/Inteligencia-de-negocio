@@ -1,10 +1,12 @@
 """Monta os relatórios do DataLab 9-B2 no template oficial enviado pelo aluno.
 
 Pré-requisito: executar os scripts R em cada pasta, gerando console.txt e
-resultados.csv. As imagens são renderizações do código e da saída do programa, sem
-simular uma captura do RStudio. Conversão e inspeção visual são etapas externas.
+resultados.csv, e capturar as janelas com 16_captura_datalab9.py. As imagens do
+código e console são capturas diretas do terminal gráfico. Conversão e inspeção
+visual são etapas externas.
 """
 import csv
+import hashlib
 import json
 from pathlib import Path
 
@@ -14,7 +16,6 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
-from PIL import Image, ImageDraw, ImageFont
 
 import entrega
 
@@ -34,28 +35,17 @@ def br(value, digits=2):
     return f"{value:,.{digits}f}".replace(",", "@").replace(".", ",").replace("@", ".")
 
 
-def visual_text(lines, path, title, first_line=None, code=False, accent="#102C41"):
-    """Renderiza texto legível; a origem é sempre o arquivo entregue."""
-    width = 1560
-    font = ImageFont.truetype("DejaVuSansMono.ttf", 32)
-    title_font = ImageFont.truetype("DejaVuSans.ttf", 30)
-    small = ImageFont.truetype("DejaVuSansMono.ttf", 24)
-    step = 43
-    image = Image.new("RGB", (width, 112 + step * len(lines)), "white")
-    draw = ImageDraw.Draw(image)
-    draw.rectangle((0, 0, width, 78), fill=accent)
-    draw.text((32, 21), title, font=title_font, fill="white")
-    for i, line in enumerate(lines):
-        y = 94 + i * step
-        x = 32
-        if first_line is not None:
-            draw.text((18, y + 4), str(first_line+i).rjust(2), font=small, fill="#6B7280")
-            x = 81
-        assert draw.textlength(line, font=font) + x < width - 15, (path, line)
-        color = "#55705B" if code and line.lstrip().startswith("#") else "#202937"
-        draw.text((x, y), line, font=font, fill=color)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    image.save(path)
+def capturas_verificadas(base):
+    images = base / "capturas"
+    metadata = json.loads((images / "proveniencia.json").read_text())
+    for name, expected in [
+        ("indicadores_mercado_trabalho.R", metadata["codigo_sha256"]),
+        ("dados_pnad.csv", metadata["dados_sha256"]),
+    ]:
+        assert hashlib.sha256((base / name).read_bytes()).hexdigest() == expected, name
+    for name in ["codigo_1.png", "codigo_2.png", "console.png"]:
+        assert hashlib.sha256((images / name).read_bytes()).hexdigest() == metadata["arquivos_sha256"][name], name
+    return images
 
 
 def para(doc, text, size=11, bold=False, after=7):
@@ -161,10 +151,7 @@ def build(folder):
     console = (base/"console.txt").read_text().splitlines()
     assert p["nome"] in "\n".join(code) and p["nome"] in "\n".join(console)
     assert p["matricula"] in "\n".join(console)
-    images = base/"imagens"
-    visual_text(code[:42], images/"codigo_1.png", "Código R | dados, validação e fórmulas", 1, True)
-    visual_text(code[42:], images/"codigo_2.png", "Código R | execução e apresentação", 43, True)
-    visual_text(console, images/"console.png", "Resultados da execução em R")
+    images = capturas_verificadas(base)
 
     doc = Document(TEMPLATE)
     entrega.ALUNO, entrega.MATRICULA = p["nome"], p["matricula"]
@@ -211,15 +198,15 @@ def build(folder):
          "diferir na última casa das taxas publicadas pelo IBGE. Consulta em 06/11/2026.", 9)
 
     heading(doc, "Código em R", new_page=True)
-    picture(doc, images/"codigo_1.png", "Figura 1. Dados oficiais, validações e implementação das fórmulas. Código do arquivo entregue.")
+    picture(doc, images/"codigo_1.png", "Figura 1. Código aberto no editor: dados, validações e fórmulas.")
     heading(doc, "Código em R e apresentação da saída", new_page=True)
-    picture(doc, images/"codigo_2.png", "Figura 2. Execução da função, identificação do aluno e exportação dos resultados.")
+    picture(doc, images/"codigo_2.png", "Figura 2. Continuação do código no editor: identificação e exportação dos resultados.")
     para(doc, "O script usa apenas funções do R base. Os dados ficam no próprio "
          "arquivo para permitir a execução sem conexão à internet; o CSV e a "
          "resposta original da API permitem conferir os valores utilizados.", 10)
 
     heading(doc, "Saída da execução", new_page=True)
-    picture(doc, images/"console.png", "Figura 3. Resultados obtidos na execução do programa em R.")
+    picture(doc, images/"console.png", "Figura 3. Captura do terminal com a execução do programa em R.")
     if p["sigla"] == "DF":
         interpretation = (
             f'No Distrito Federal, {br(rates[0])}% da população em idade de trabalhar '
@@ -307,14 +294,10 @@ def build_lucas(base, profile):
     rates = [float(row["percentual"]) for row in rows]
     code = (base / "indicadores_mercado_trabalho.R").read_text().splitlines()
     console = (base / "console.txt").read_text().splitlines()
-    images = base / "imagens"
+    images = capturas_verificadas(base)
+    charts = base / "imagens"
+    charts.mkdir(exist_ok=True)
     accent = "#285C67"
-    visual_text(code[:34], images / "codigo_1.png",
-                "Leitura do CSV e composição das taxas", 1, True, accent)
-    visual_text(code[34:], images / "codigo_2.png",
-                "Tabela de resultados e exportação", 35, True, accent)
-    visual_text(console, images / "console.png",
-                "Resultados da execução", accent=accent)
 
     fig, ax = plt.subplots(figsize=(9, 3.6))
     series = [
@@ -339,7 +322,7 @@ def build_lucas(base, profile):
     for spine in ax.spines.values():
         spine.set_visible(False)
     fig.tight_layout(pad=.7)
-    fig.savefig(images / "composicao_mercado.png", dpi=220)
+    fig.savefig(charts / "composicao_mercado.png", dpi=220)
     plt.close(fig)
 
     doc = Document(TEMPLATE)
@@ -392,7 +375,7 @@ def build_lucas(base, profile):
 
     heading(doc, "Resultados do recorte catarinense", new_page=True)
     picture(doc, images / "console.png",
-            "Figura 1. Console com os componentes e os percentuais de cada indicador.")
+            "Figura 1. Execução em R no terminal: componentes e percentuais de cada indicador.")
     para(doc, "Ocupação e participação", 11, True)
     para(doc, f'A participação foi de {br(rates[0])}%. Entre as pessoas na força '
          f'de trabalho, {br(rates[1])}% estavam ocupadas e {br(rates[2])}% '
@@ -409,14 +392,14 @@ def build_lucas(base, profile):
 
     heading(doc, "Implementação em R", new_page=True)
     picture(doc, images / "codigo_1.png",
-            "Figura 2. Importação da base, validações e montagem da tabela de taxas.")
+            "Figura 2. Código aberto no editor: importação, validações e tabela de taxas.")
     para(doc, "A função montar_taxas recebe um data.frame e devolve os componentes "
          "de cada indicador junto com o percentual. Manter as contagens na tabela "
          "facilita conferir de onde veio cada resultado.", 10)
 
     heading(doc, "Apresentação e exportação", new_page=True)
     picture(doc, images / "codigo_2.png",
-            "Figura 3. Formatação da tabela, identificação do aluno e gravação do CSV.")
+            "Figura 3. Continuação do código no editor: formatação, identificação e exportação.")
     para(doc, "A variável exibicao contém os percentuais com duas casas decimais "
          "para leitura no console. O arquivo resultados.csv é gravado a partir "
          "de resultado, preservando a precisão do cálculo.", 10)
@@ -425,7 +408,7 @@ def build_lucas(base, profile):
          "indicadores_mercado_trabalho.R. O programa utiliza apenas R base.", 10)
 
     heading(doc, "Descrição técnica e interpretação", new_page=True)
-    picture(doc, images / "composicao_mercado.png",
+    picture(doc, charts / "composicao_mercado.png",
             "Figura 4. Composição percentual de três grupos distintos em Santa Catarina.")
     para(doc, "O que os resultados mostram", 11, True)
     para(doc, f'A desocupação de {br(rates[2])}% é uma parcela pequena da força '

@@ -58,8 +58,10 @@ Rscript --vanilla indicadores_mercado_trabalho.R > console.txt
 No RStudio, abra o arquivo `.R`, defina a pasta do script como diretório de
 trabalho em **Session → Set Working Directory → To Source File Location** e clique
 em **Source**. O script imprime os resultados e grava `resultados.csv` no diretório
-de trabalho. As imagens do relatório apresentam o código e o console obtido na execução.
-Os títulos foram padronizados como resultados da execução em R.
+de trabalho. As imagens do relatório são capturas diretas das janelas: R interativo
+no terminal gráfico stterm e código aberto no GNU nano, em modo de leitura. Não
+são capturas do RStudio. Os PNGs originais, o registro da sessão e os hashes estão
+em [`capturas/`](capturas/).
 
 Para testar, execute da raiz do repositório:
 
@@ -74,7 +76,7 @@ com as taxas de referência publicadas pelo IBGE.
 
 ## Reproduzir as duas entregas
 
-Os scripts Python de preparação e montagem usam `python-docx`, `Pillow` e `matplotlib`. A
+Os scripts Python de preparação e montagem usam `python-docx` e `matplotlib`. A
 conversão para PDF requer LibreOffice. O template desta atividade foi preservado
 em `fontes/template_aluno.docx`, sem alterar o template das atividades anteriores.
 
@@ -83,10 +85,17 @@ python3 scripts/14_prepara_datalab9.py
 (cd datalab9 && Rscript --vanilla indicadores_mercado_trabalho.R > console.txt)
 (cd datalab9_lucas && Rscript --vanilla indicadores_mercado_trabalho.R > console.txt)
 Rscript --vanilla scripts/testa_datalab9.R
+python3 scripts/16_captura_datalab9.py --r /caminho/para/R
 python3 scripts/15_gera_entregas_datalab9.py
 soffice --headless --convert-to pdf --outdir datalab9/entrega datalab9/entrega/DataLab_9B2_Claudio_2321070.docx
 soffice --headless --convert-to pdf --outdir datalab9_lucas/entrega datalab9_lucas/entrega/DataLab_9B2_Lucas_2021068.docx
 ```
+
+A captura requer Linux, Xvfb, Openbox, stterm, xdotool, ImageMagick, nano e o
+comando `script`. O script 16 abre o R, executa o arquivo com `source()` e captura
+a janela sem redesenhar seu conteúdo; depois abre o código no editor. O script 15
+confere os hashes das capturas, do código e dos dados antes de montar os documentos.
+As capturas já incluídas podem ser reutilizadas se esses arquivos não mudaram.
 
 O script de preparação lê a resposta arquivada da API. Ele regenera as entradas e
 os perfis, sem substituir a fonte por valores mais recentes. As implementações

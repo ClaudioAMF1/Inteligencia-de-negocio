@@ -1,0 +1,36 @@
+Script started on 2026-11-08 18:05:36-03:00 [COMMAND="/workspace/scratch/592dcf4bebfc/r-runtime/usr/lib/R/bin/R --vanilla --quiet" TERM="st-256color" TTY="/dev/pts/0" COLUMNS="100" LINES="38"]
+> R.version.string
+[1] "R version 4.3.3 (2024-02-29)"
+> source("indicadores_mercado_trabalho.R")
+DATALAB 9-B2 | INDICADORES DO MERCADO DE TRABALHO
+Aluno: Claudio da Aparecida Meireles Filho 
+Matrícula: 2321070 
+Recorte: Distrito Federal | 4º trimestre de 2025 | sexo total
+Fonte: IBGE / PNAD Contínua / SIDRA 4093
+Ambiente: R version 4.3.3 (2024-02-29) 
+
+TOTAIS DE ENTRADA (mil pessoas)
+  pia                2489
+  ft                 1670
+  ocupados           1557
+  desocupados         113
+  informais           422
+  formais*           1135
+* Formais calculados por PO - PI.
+
+INDICADORES (fórmulas multiplicadas por 100)
+Participação na força de trabalho   67,10 %
+Taxa de ocupação                    93,23 %
+Taxa de desocupação                  6,77 %
+Taxa de informalidade               27,10 %
+Grau de formalização                72,90 %
+Nível da ocupação (complementar)    62,56 %
+
+Checagens: totais coerentes; denominadores positivos.
+Ocupação + desocupação: 100,00 %
+Informalidade + formalização: 100,00 %
+Nota: percentuais recalculados sobre totais arredondados.
+Taxa de ocupação usa FT; nível da ocupação usa PIA.
+> q("no")
+
+Script done on 2026-11-08 18:05:38-03:00 [COMMAND_EXIT_CODE="0"]

@@ -1,0 +1,13 @@
+{
+  "captura_utc": "2026-11-08T21:05:40.819765+00:00",
+  "interface_execucao": "R interativo em stterm",
+  "interface_codigo": "GNU nano em stterm, modo somente leitura",
+  "metodo": "ImageMagick import, captura direta da janela com moldura",
+  "codigo_sha256": "aded335d96b7c3bd6f1a188a89a79b5ca4f64dc0096e9e921dcbc4279970d4a8",
+  "dados_sha256": "bacbd232d70e549da3cc9c581bc0adf101f604af89c2097fe4152829c4ec4875",
+  "arquivos_sha256": {
+    "codigo_1.png": "056d49d8b905f26dad8d294b88b3a23988237aa74e84f4e1c70a6686cab43d99",
+    "codigo_2.png": "f3dfbff679dcb10482f2d5467cbe2f1fdcb9a97eafdb1787057838b2d4edc86b",
+    "console.png": "537b500f765e1834d7add062e8a7a961078c004a5db87d0a3379de92b381d174"
+  }
+}

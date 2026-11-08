@@ -67,6 +67,11 @@ páginas de código e a descrição técnica. O gráfico final de composição m
 três bases distintas: população em idade de trabalhar, força de trabalho e
 pessoas ocupadas. Cada barra soma 100% dentro do seu próprio grupo.
 
+As três imagens do código e do console são capturas diretas de janelas: R
+interativo no terminal gráfico stterm e código aberto no GNU nano. Os originais,
+o registro da execução e os hashes estão em [`capturas/`](capturas/). Não são
+prints do RStudio nem imagens desenhadas a partir do texto.
+
 ## Fontes
 
 - [IBGE SIDRA, tabela 4093](https://sidra.ibge.gov.br/tabela/4093): UF 42, período 202504, sexo Total 6794.
