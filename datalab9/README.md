@@ -10,6 +10,11 @@ atividade, com identificação na capa, no cabeçalho do código e na saída do 
 
 ## Entrega
 
+Os dois relatórios mantêm os títulos originais “Solução do DevLab” e
+“Descrição técnica do laboratório”, seguidos das perguntas “Qual foi o objetivo
+do DevLab?”, “Quais foram as técnicas utilizadas?” e “O que você aprendeu?”.
+As diferenças ficam nos dados, código, respostas e análises.
+
 - [Relatório em PDF](entrega/DataLab_9B2_Claudio_2321070.pdf)
 - [Relatório editável em Word](entrega/DataLab_9B2_Claudio_2321070.docx)
 - [Código em R](indicadores_mercado_trabalho.R)

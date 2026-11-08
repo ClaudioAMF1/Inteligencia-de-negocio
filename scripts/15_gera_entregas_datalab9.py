@@ -118,8 +118,9 @@ def table(doc, headers, rows, widths):
     return t
 
 
-def picture(doc, image, caption):
+def picture(doc, image, caption, new_page=False):
     p = doc.add_paragraph()
+    p.paragraph_format.page_break_before = new_page
     p.paragraph_format.space_after = Pt(3)
     p.paragraph_format.keep_with_next = True
     p.add_run().add_picture(str(image), width=Inches(6.2))
@@ -168,12 +169,11 @@ def build(folder):
     doc.core_properties.title="DataLab 9 B2 Indicadores do mercado de trabalho"
     doc.core_properties.subject=f'{p["nome"]} | Matrícula {p["matricula"]} | {p["estado"]}'
 
-    heading(doc, "Solução do DataLab")
+    heading(doc, "Solução do DevLab")
     recorte = "do Distrito Federal" if p["sigla"] == "DF" else "de Santa Catarina"
     para(doc, f'Calculei os cinco indicadores em R com dados {recorte}, '
          'no 4º trimestre de 2025. O recorte considera pessoas de 14 anos ou mais, '
          'de ambos os sexos, na PNAD Contínua trimestral do IBGE.', 11)
-    para(doc, "Dados utilizados", 11, True, 5)
     table(doc, ["Grupo populacional", "Sigla", "Mil pessoas"], [
         ("População em idade de trabalhar", "PIA", br(d["pia"],0)),
         ("Pessoas na força de trabalho", "FT", br(d["ft"],0)),
@@ -182,7 +182,6 @@ def build(folder):
         ("Ocupados em situação de informalidade", "PI", br(d["informais"],0)),
         ("Ocupados formais calculados", "PO − PI", br(d["ocupados"]-d["informais"],0))
     ], [3.83, .82, 1.55])
-    para(doc, "Indicadores calculados", 11, True, 5)
     table(doc, ["Indicador", "Fórmula × 100", "Resultado"], [
         (r["indicador"].replace(" (complementar)", "*"), r["formula"],br(float(r["percentual"]))+"%")
         for r in results
@@ -197,16 +196,13 @@ def build(folder):
          "já expandidas e arredondadas em mil pessoas. As taxas recalculadas podem "
          "diferir na última casa das taxas publicadas pelo IBGE. Consulta em 06/11/2026.", 9)
 
-    heading(doc, "Código em R", new_page=True)
-    picture(doc, images/"codigo_1.png", "Figura 1. Código aberto no editor: dados, validações e fórmulas.")
-    heading(doc, "Código em R e apresentação da saída", new_page=True)
-    picture(doc, images/"codigo_2.png", "Figura 2. Continuação do código no editor: identificação e exportação dos resultados.")
+    picture(doc, images/"codigo_1.png", "Figura 1. Código aberto no editor: dados, validações e fórmulas.", new_page=True)
+    picture(doc, images/"codigo_2.png", "Figura 2. Continuação do código no editor: identificação e exportação dos resultados.", new_page=True)
     para(doc, "O script usa apenas funções do R base. Os dados ficam no próprio "
          "arquivo para permitir a execução sem conexão à internet; o CSV e a "
          "resposta original da API permitem conferir os valores utilizados.", 10)
 
-    heading(doc, "Saída da execução", new_page=True)
-    picture(doc, images/"console.png", "Figura 3. Captura do terminal com a execução do programa em R.")
+    picture(doc, images/"console.png", "Figura 3. Captura do terminal com a execução do programa em R.", new_page=True)
     if p["sigla"] == "DF":
         interpretation = (
             f'No Distrito Federal, {br(rates[0])}% da população em idade de trabalhar '
@@ -230,7 +226,7 @@ def build(folder):
     para(doc, "O laboratório aplicou razões e percentuais a grupos populacionais "
          "da PNAD Contínua. A função calcular_indicadores separa a validação dos "
          "totais, o cálculo das taxas e a apresentação dos resultados.", 11)
-    para(doc, "Qual foi o objetivo do DataLab?", 11, True, 5)
+    para(doc, "Qual foi o objetivo do DevLab?", 11, True, 5)
     if p["sigla"] == "DF":
         objective = ("Implementar em R a participação na força de trabalho, a ocupação, "
                      "a desocupação, a informalidade e a formalização, usando o Distrito "
@@ -265,7 +261,6 @@ def build(folder):
          "automatizadas deste recorte cobrem exemplos de cálculo e casos inválidos.")
     para(doc, "O que você aprendeu?", 11, True, 5)
     para(doc, learned)
-    para(doc, "Critério de informalidade e fontes", 11, True, 5)
     para(doc, "A proxy do IBGE reúne empregados do setor privado e trabalhadores "
          "domésticos sem carteira, empregadores e trabalhadores por conta própria "
          "sem CNPJ e trabalhadores familiares auxiliares. Esta atividade usa "
@@ -343,10 +338,9 @@ def build_lucas(base, profile):
     doc.core_properties.title = "DataLab 9 B2 Mercado de trabalho em Santa Catarina"
     doc.core_properties.subject = "Lucas Fiche Ungarelli Borges | RA 2021068"
 
-    heading(doc, "Solução do DataLab")
-    para(doc, "Santa Catarina no quarto trimestre de 2025", 12, True)
-    para(doc, "O objetivo é calcular os indicadores de participação, ocupação, "
-         "desocupação, informalidade e formalização. A análise usa os totais da "
+    heading(doc, "Solução do DevLab")
+    para(doc, "Com os dados de Santa Catarina no quarto trimestre de 2025, calculei "
+         "participação, ocupação, desocupação, informalidade e formalização. A análise usa os totais da "
          "PNAD Contínua para pessoas com 14 anos ou mais, de ambos os sexos.")
     table(doc, ["Variável do arquivo", "Grupo representado", "Mil pessoas"], [
         ("pia", "População em idade de trabalhar", br(d["pia"], 0)),
@@ -355,7 +349,6 @@ def build_lucas(base, profile):
         ("desocupados", "Pessoas desocupadas", br(d["desocupados"], 0)),
         ("informais", "Ocupados em situação de informalidade", br(d["informais"], 0)),
     ], [1.30, 3.65, 1.25])
-    para(doc, "Como os dados entram no cálculo", 11, True)
     para(doc, "O programa lê dados_pnad.csv e organiza uma tabela com uma linha "
          "por indicador. Cada linha guarda seu numerador, denominador e fórmula. "
          "O percentual é obtido pela mesma operação em toda a tabela: "
@@ -368,20 +361,31 @@ def build_lucas(base, profile):
          f'{br(d["pia"]-d["ft"],0)} mil pessoas estavam fora da força de trabalho '
          f'e {br(d["ocupados"]-d["informais"],0)} mil ocupados compõem o grupo formal, '
          "calculado pela diferença entre ocupados e informais.")
-    para(doc, "Fonte e unidade", 11, True)
     para(doc, "SIDRA 4093, UF 42, período 202504, sexo Total. Os números estão em "
          "mil pessoas e já foram expandidos pelo IBGE. O arquivo de entrada mantém "
          "os totais publicados, sem aplicar pesos novamente. Consulta em 06/11/2026.", 10)
 
-    heading(doc, "Resultados do recorte catarinense", new_page=True)
+    picture(doc, images / "codigo_1.png",
+            "Figura 1. Código aberto no editor: importação, validações e tabela de taxas.", new_page=True)
+    para(doc, "A função montar_taxas recebe um data.frame e devolve os componentes "
+         "de cada indicador junto com o percentual. Manter as contagens na tabela "
+         "facilita conferir de onde veio cada resultado.", 10)
+
+    picture(doc, images / "codigo_2.png",
+            "Figura 2. Continuação do código no editor: formatação, identificação e exportação.", new_page=True)
+    para(doc, "A variável exibicao contém os percentuais com duas casas decimais "
+         "para leitura no console. O arquivo resultados.csv é gravado a partir "
+         "de resultado, preservando a precisão do cálculo.", 10)
+    para(doc, "Para executar, mantenha o código e dados_pnad.csv na mesma pasta. "
+         "No RStudio, defina essa pasta como diretório de trabalho e execute "
+         "indicadores_mercado_trabalho.R. O programa utiliza apenas R base.", 10)
+
     picture(doc, images / "console.png",
-            "Figura 1. Execução em R no terminal: componentes e percentuais de cada indicador.")
-    para(doc, "Ocupação e participação", 11, True)
+            "Figura 3. Execução em R no terminal: componentes e percentuais de cada indicador.", new_page=True)
     para(doc, f'A participação foi de {br(rates[0])}%. Entre as pessoas na força '
          f'de trabalho, {br(rates[1])}% estavam ocupadas e {br(rates[2])}% '
          "desocupadas. Já o nível de ocupação usa toda a população em idade de "
          f'trabalhar como base e ficou em {br(rates[5])}%.')
-    para(doc, "Informalidade e formalização", 11, True)
     para(doc, f'Dos {br(d["ocupados"],0)} mil ocupados, {br(d["informais"],0)} mil '
          f'estavam na informalidade. Essa razão resulta em {br(rates[3])}%. '
          f'O complemento formal corresponde a {br(rates[4])}% dos ocupados. '
@@ -390,44 +394,33 @@ def build_lucas(base, profile):
          "podem diferir ligeiramente das taxas oficiais calculadas pelo IBGE com "
          "valores não arredondados.", 10)
 
-    heading(doc, "Implementação em R", new_page=True)
-    picture(doc, images / "codigo_1.png",
-            "Figura 2. Código aberto no editor: importação, validações e tabela de taxas.")
-    para(doc, "A função montar_taxas recebe um data.frame e devolve os componentes "
-         "de cada indicador junto com o percentual. Manter as contagens na tabela "
-         "facilita conferir de onde veio cada resultado.", 10)
-
-    heading(doc, "Apresentação e exportação", new_page=True)
-    picture(doc, images / "codigo_2.png",
-            "Figura 3. Continuação do código no editor: formatação, identificação e exportação.")
-    para(doc, "A variável exibicao contém os percentuais com duas casas decimais "
-         "para leitura no console. O arquivo resultados.csv é gravado a partir "
-         "de resultado, preservando a precisão do cálculo.", 10)
-    para(doc, "Para executar, mantenha o código e dados_pnad.csv na mesma pasta. "
-         "No RStudio, defina essa pasta como diretório de trabalho e execute "
-         "indicadores_mercado_trabalho.R. O programa utiliza apenas R base.", 10)
-
-    heading(doc, "Descrição técnica e interpretação", new_page=True)
     picture(doc, charts / "composicao_mercado.png",
             "Figura 4. Composição percentual de três grupos distintos em Santa Catarina.")
-    para(doc, "O que os resultados mostram", 11, True)
-    para(doc, f'A desocupação de {br(rates[2])}% é uma parcela pequena da força '
-         "de trabalho. Isso não significa que quase toda a população em idade "
-         f'de trabalhar estivesse ocupada: {br(100-rates[0])}% estava fora da força '
-         "de trabalho. As duas barras têm bases diferentes.")
-    para(doc, "Técnicas utilizadas", 11, True)
+    heading(doc, "Descrição técnica do laboratório", new_page=True)
+    para(doc, "A atividade aplica razões entre grupos da PNAD Contínua. "
+         "Os totais de Santa Catarina são lidos de um CSV e relacionados "
+         "em uma tabela de numeradores, denominadores e percentuais.")
+    para(doc, "Qual foi o objetivo do DevLab?", 11, True, 5)
+    para(doc, "Calcular os cinco indicadores solicitados para Santa Catarina "
+         "e conferir como cada taxa descreve uma parte do mercado de trabalho. "
+         "A execução em R permite relacionar os percentuais às contagens "
+         "utilizadas e registrar os resultados em um arquivo CSV.")
+    para(doc, "Quais foram as técnicas utilizadas?", 11, True, 5)
     para(doc, "A implementação combina leitura de CSV, validação de uma linha de "
          "dados e operações entre colunas de um data.frame. A separação entre "
          "resultado e exibicao evita que o arredondamento usado no console altere "
          "os valores exportados. Os testes também cobrem arquivo sem registros "
          "e arquivo com mais de um recorte.")
-    para(doc, "Conclusão do exercício", 11, True)
+    para(doc, "O que você aprendeu?", 11, True, 5)
+    para(doc, f'A desocupação de {br(rates[2])}% é uma parcela pequena da força '
+         "de trabalho. Isso não significa que quase toda a população em idade "
+         f'de trabalhar estivesse ocupada: {br(100-rates[0])}% estava fora da força '
+         "de trabalho. Esses dois percentuais têm bases diferentes.")
     para(doc, "A leitura dos indicadores depende da base de comparação. "
          "Participação usa a população em idade de trabalhar; ocupação e "
          "desocupação usam a força de trabalho; informalidade e formalização "
          "consideram somente os ocupados. Somar taxas de bases diferentes não "
          "produz uma divisão válida da população.")
-    para(doc, "Definições e referências", 11, True)
     para(doc, "O grau de formalização foi definido como 100% menos a informalidade. "
          "A proxy do IBGE inclui empregados privados e domésticos sem carteira, "
          "empregadores e trabalhadores por conta própria sem CNPJ e familiares "
