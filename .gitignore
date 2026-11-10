@@ -1,2 +1,5 @@
 __pycache__/
 *.pyc
+
+# projeto aplicado: downloads em andamento e cache do Python
+projeto/dados/anp/*.parcial
