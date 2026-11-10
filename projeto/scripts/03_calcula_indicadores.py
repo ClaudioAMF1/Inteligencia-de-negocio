@@ -34,6 +34,8 @@ PRODUTOS = {"GASOLINA": "Gasolina", "GASOLINA COMUM": "Gasolina",
 LITROS_MES = 100      # consumo de referência: ~1.000 km com 10 km/l
 TANQUE = 50           # litros de um tanque cheio de carro de passeio
 PARIDADE = 0.70       # etanol compensa quando custa menos de 70% da gasolina
+MIN_COLETAS_BANDEIRA = 30
+MIN_POSTOS_BANDEIRA = 3
 
 
 def bandeira(nome):
@@ -134,8 +136,15 @@ def main():
         w.writerows(painel)
     media_mes = {(p["cidade"], p["produto"], p["mes"]): p["media"] for p in painel}
 
-    ind = {"periodo": {"inicio": min(c["mes"] for c in coletas), "fim": ultimo_mes,
+    meses_com_coleta = {c["mes"] for c in coletas}
+    primeiro_mes = min(meses_com_coleta)
+    calendario, (a, m) = [], (int(primeiro_mes[:4]), int(primeiro_mes[5:]))
+    while f"{a}-{m:02d}" <= ultimo_mes:
+        calendario.append(f"{a}-{m:02d}")
+        a, m = (a + 1, 1) if m == 12 else (a, m + 1)
+    ind = {"periodo": {"inicio": primeiro_mes, "fim": ultimo_mes,
                        "coletas": len(coletas), "postos": len({c["cnpj"] for c in coletas}),
+                       "meses_sem_coleta": [m for m in calendario if m not in meses_com_coleta],
                        "base_real": base_real}}
 
     # ------------------------------------------------- P1: Brasília x Goiânia, mín/méd/máx
@@ -213,12 +222,18 @@ def main():
         do_ano = [c for c in recente if c["cidade"] == cidade and c["produto"] == "Gasolina"]
         semanal_media = {s: st.mean(v) for (s,), v in agrupa(do_ano, "semana").items()}
         # Diferença para a média da semana, para não confundir bandeira com o momento da coleta.
-        desvios = defaultdict(list)
+        desvios, postos = defaultdict(list), defaultdict(set)
         for c in do_ano:
             desvios[c["bandeira"]].append(c["preco"] - semanal_media[c["semana"]])
+            postos[c["bandeira"]].add(c["cnpj"])
+        # A pergunta compara as três grandes distribuidoras com a bandeira branca; o grupo
+        # "Outras bandeiras" junta marcas pequenas (poucos postos) e fica fora da comparação.
+        # Um grupo só entra com coletas e postos suficientes para não retratar um posto isolado.
         p5["cidades"][cidade] = {b: {"desvio_medio": round(st.mean(v), 3), "coletas": len(v),
+                                     "postos": len(postos[b]),
                                      "preco_medio": round(st.mean(c["preco"] for c in do_ano if c["bandeira"] == b), 3)}
-                                 for b, v in sorted(desvios.items()) if len(v) >= 30}
+                                 for b, v in sorted(desvios.items()) if b != "Outras bandeiras"
+                                 and len(v) >= MIN_COLETAS_BANDEIRA and len(postos[b]) >= MIN_POSTOS_BANDEIRA}
     ind["p5"] = p5
 
     # ------------------------------------------------- P6: preço real (deflacionado pelo IPCA)

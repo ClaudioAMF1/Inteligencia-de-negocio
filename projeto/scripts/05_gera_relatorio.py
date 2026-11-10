@@ -108,7 +108,9 @@ def textos(ind):
           f"{reais(ga['Goiânia']['media'])} em Goiânia e {reais(ga['Brasília']['media'])} em Brasília, mais cara em "
           f"{cara(ga)} por {reais(abs(ga['diferenca_media']))}. Considerando o menor e o maior preço coletado em "
           f"cada semana, o etanol vai de {reais(et['Goiânia']['minimo'])} a {reais(et['Goiânia']['maximo'])} em "
-          f"Goiânia e de {reais(et['Brasília']['minimo'])} a {reais(et['Brasília']['maximo'])} em Brasília. "
+          f"Goiânia e de {reais(et['Brasília']['minimo'])} a {reais(et['Brasília']['maximo'])} em Brasília; a "
+          f"gasolina, de {reais(ga['Goiânia']['minimo'])} a {reais(ga['Goiânia']['maximo'])} em Goiânia e de "
+          f"{reais(ga['Brasília']['minimo'])} a {reais(ga['Brasília']['maximo'])} em Brasília. "
           f"Ao longo da série, o etanol foi mais barato em {barata(et)} em {n_et} de {t_et} anos, e a gasolina, "
           f"em {barata(ga)} em {n_ga} de {t_ga} anos"
           + (" - um padrão estável, não um efeito do último ano." if min(n_et / t_et, n_ga / t_ga) >= 0.7
@@ -117,6 +119,8 @@ def textos(ind):
     anos2 = sorted(p2["anos"], key=int)
     a0, a1 = anos2[0], anos2[-1]
     d0, d1 = p2["anos"][a0], p2["anos"][a1]
+    for cidade in d1:
+        d1[cidade]["ano"] = a1
     razao = d1["Goiânia"]["percentual"] / d1["Brasília"]["percentual"]
     sentido = lambda c: "subiu" if d1[c]["percentual"] > d0[c]["percentual"] else "caiu"
     pico = {c: max((a for a in anos2 if c in p2["anos"][a]), key=lambda a: p2["anos"][a][c]["percentual"])
@@ -127,8 +131,10 @@ def textos(ind):
           f"{reais(d1['Goiânia']['gasto_mensal'])}, ou {pct(d1['Goiânia']['percentual'])} da renda per capita de "
           f"Goiás ({reais(d1['Goiânia']['renda_per_capita'], 0)}): o tanque pesa {decimal(razao)} vezes mais no "
           f"orçamento goiano. Em {a0}, os percentuais eram {pct(d0['Brasília']['percentual'])} e "
-          f"{pct(d0['Goiânia']['percentual'])}; o peso {sentido('Brasília')} em Brasília e {sentido('Goiânia')} "
-          f"em Goiânia. O ano de maior peso foi {pico['Brasília']} em Brasília "
+          f"{pct(d0['Goiânia']['percentual'])}; "
+          + (f"o peso {sentido('Brasília')} nas duas capitais. " if sentido("Brasília") == sentido("Goiânia") else
+             f"o peso {sentido('Brasília')} em Brasília e {sentido('Goiânia')} em Goiânia. ")
+          + f"O ano de maior peso foi {pico['Brasília']} em Brasília "
           f"({pct(p2['anos'][pico['Brasília']]['Brasília']['percentual'])}) e {pico['Goiânia']} em Goiânia "
           f"({pct(p2['anos'][pico['Goiânia']]['Goiânia']['percentual'])}).")
 
@@ -151,19 +157,20 @@ def textos(ind):
 
     def resumo_bandeira(cidade):
         dados = p5["cidades"][cidade]
-        branca = dados.get("Bandeira branca")
-        marcas = {b: v for b, v in dados.items() if b not in ("Bandeira branca", "Outras bandeiras")}
-        mais_cara = max(marcas, key=lambda b: marcas[b]["desvio_medio"])
-        texto = (f"em {cidade}, a bandeira mais cara foi {mais_cara}, "
-                 f"{reais(abs(marcas[mais_cara]['desvio_medio']), 3)} "
-                 f"{'acima' if marcas[mais_cara]['desvio_medio'] >= 0 else 'abaixo'} da média da semana")
-        if branca:
-            diferenca = marcas[mais_cara]["desvio_medio"] - branca["desvio_medio"]
-            texto += (f", e os postos de bandeira branca ficaram {reais(abs(branca['desvio_medio']), 3)} "
-                      f"{'abaixo' if branca['desvio_medio'] < 0 else 'acima'} dela - "
-                      f"{reais(diferenca, 3)} por litro entre os dois extremos, ou "
-                      f"{reais(diferenca * p3['tanque_litros'])} num tanque de {p3['tanque_litros']} litros")
-        return texto
+        nome = lambda b: "bandeira branca" if b == "Bandeira branca" else b
+        partes = [f"{nome(b)} {reais(abs(v['desvio_medio']), 3)} {'acima' if v['desvio_medio'] >= 0 else 'abaixo'}"
+                  for b, v in sorted(dados.items(), key=lambda x: -x[1]["desvio_medio"])]
+        mais_cara = max(dados, key=lambda b: dados[b]["desvio_medio"])
+        mais_barata = min(dados, key=lambda b: dados[b]["desvio_medio"])
+        diferenca = dados[mais_cara]["desvio_medio"] - dados[mais_barata]["desvio_medio"]
+        return (f"em {cidade}, " + ", ".join(partes[:-1]) + f" e {partes[-1]} da média da semana; entre a "
+                f"bandeira mais cara, {nome(mais_cara)}, e a mais barata, {nome(mais_barata)}, a distância foi de "
+                f"{reais(diferenca, 3)} por litro, ou {reais(diferenca * p3['tanque_litros'])} num tanque de "
+                f"{p3['tanque_litros']} litros")
+
+    def branca_nao_e_a_mais_barata():
+        return [c for c, dados in p5["cidades"].items() if "Bandeira branca" in dados
+                and min(dados, key=lambda b: dados[b]["desvio_medio"]) != "Bandeira branca"]
 
     def amplitude_bandeiras(cidade):
         valores = [v["desvio_medio"] for v in p5["cidades"][cidade].values()]
@@ -172,6 +179,9 @@ def textos(ind):
     bandeira_menor = all(amplitude_bandeiras(c) < p3["cidades"][c]["spread_medio"] for c in ("Brasília", "Goiânia"))
     r5 = (f"Comparando cada posto com a média da cidade na mesma semana ({mes_br(p5['meses'][0])} a "
           f"{mes_br(p5['meses'][1])}, gasolina): {resumo_bandeira('Brasília')}; {resumo_bandeira('Goiânia')}. "
+          + (f"Bandeira branca não é sinônimo de posto mais barato: em {' e '.join(branca_nao_e_a_mais_barata())}, "
+             "uma bandeira grande cobrou menos que a média dos postos sem bandeira. "
+             if branca_nao_e_a_mais_barata() else "")
           + ("A bandeira pesa no preço, mas pesa menos do que a escolha do posto: a distância entre a bandeira "
              "mais cara e a mais barata é menor que a diferença média entre o posto mais caro e o mais barato "
              "da mesma semana (pergunta 3)." if bandeira_menor else
@@ -187,7 +197,7 @@ def textos(ind):
           + leitura_real(b6, g6) + f" Valores reais em reais de {mes_br(p6['base_real'])}.")
 
     conclusoes = conclusoes_do_estudo(et, ga, barata, n_et, t_et, n_ga, t_ga, d1, b3, g3, g4, p5)
-    return [r1, r2, r3, r4, r5, r6], conclusoes, limitacoes_do_estudo()
+    return [r1, r2, r3, r4, r5, r6], conclusoes, limitacoes_do_estudo(ind)
 
 
 def leitura_real(b6, g6):
@@ -215,8 +225,9 @@ def conclusoes_do_estudo(et, ga, barata, n_et, t_et, n_ga, t_ga, d1, b3, g3, g4,
     preco_bsb, preco_gyn = d1["Brasília"]["preco_medio"], d1["Goiânia"]["preco_medio"]
     renda_ratio = d1["Brasília"]["renda_per_capita"] / d1["Goiânia"]["renda_per_capita"]
     preco_dif = preco_gyn / preco_bsb - 1
-    pesa = (f"o mesmo consumo de gasolina representa {pct(d1['Goiânia']['percentual'])} da renda per capita de "
-            f"Goiás e {pct(d1['Brasília']['percentual'])} da do DF. O litro custa "
+    ano = d1["Brasília"]["ano"]
+    pesa = (f"em {ano}, o mesmo consumo de gasolina representou {pct(d1['Goiânia']['percentual'])} da renda per "
+            f"capita de Goiás e {pct(d1['Brasília']['percentual'])} da do DF. Naquele ano o litro custou "
             f"{pct(abs(preco_dif))} {'mais' if preco_dif > 0 else 'menos'} em Goiânia, mas a renda per capita do "
             f"DF é {decimal(renda_ratio)} vezes a de Goiás: a diferença de peso vem "
             f"{'principalmente da renda' if renda_ratio - 1 > abs(preco_dif) else 'principalmente do preço'}.")
@@ -231,8 +242,12 @@ def conclusoes_do_estudo(et, ga, barata, n_et, t_et, n_ga, t_ga, d1, b3, g3, g4,
     return [("Onde abastecer: ", onde), ("Quanto pesa no orçamento: ", pesa), ("O que o consumidor controla: ", controla)]
 
 
-def limitacoes_do_estudo():
-    return [
+def limitacoes_do_estudo(ind):
+    sem_coleta = ind["periodo"]["meses_sem_coleta"]
+    lacuna = ([f"A ANP não publicou coletas de Brasília e Goiânia em {faixas_de_meses(sem_coleta)}; esse "
+               f"período fica sem valor nas séries mensais, e as médias anuais usam os meses restantes."]
+              if sem_coleta else [])
+    return lacuna + [
 
         "A renda é estadual: o IBGE não publica renda domiciliar per capita anual por município, então Goiânia "
         "usa a de Goiás e Brasília a do Distrito Federal. Como a capital goiana tem renda acima da média do "
@@ -244,6 +259,10 @@ def limitacoes_do_estudo():
         "Os microdados da PNAD foram recalibrados pelo IBGE com a população do Censo 2022. Toda a série de renda "
         "usa esses pesos atuais, o que a torna comparável entre os anos, mas faz os anos anteriores a 2025 "
         "diferirem alguns por cento dos valores publicados na época.",
+        "A renda per capita é uma média e reage a poucos domicílios de renda muito alta na amostra. Em 2022, "
+        "o 1% de moradores de maior renda do DF concentrou cerca de 16% da renda da amostra, contra 8% a 10% "
+        "de 2023 a 2025; por isso a renda do DF em 2022 aparece acima da de 2023, e o peso do combustível no "
+        "DF naquele ano fica subestimado.",
         "A regra dos 70% é uma referência média: o rendimento do etanol frente à gasolina varia com o motor de "
         "cada carro.",
     ]
@@ -257,7 +276,9 @@ def metodologia(ind):
         f"coletas de gasolina comum, etanol hidratado e diesel S10 em {milhar(per['postos'])} postos.",
         "Tratamento: os valores foram convertidos para número, as datas para o calendário e as razões sociais das "
         "distribuidoras agrupadas por marca (Petrobras Distribuidora e Vibra como BR; Raízen como Shell; CBPI "
-        "como Ipiranga). Como a ANP coleta as duas capitais em dias diferentes, as comparações usam a semana e o "
+        "como Ipiranga). Na comparação de bandeiras entram as três grandes distribuidoras e a bandeira branca, "
+        "cada uma com pelo menos 30 coletas e 3 postos no período; as marcas pequenas, que somam poucos postos, "
+        "ficam de fora. Como a ANP coleta as duas capitais em dias diferentes, as comparações usam a semana e o "
         "mês como unidade.",
         "Renda: renda domiciliar per capita nominal do DF e de Goiás, calculada a partir dos microdados da PNAD "
         "Contínua pela definição do IBGE (total dos rendimentos domiciliares dividido pelo total de moradores). "

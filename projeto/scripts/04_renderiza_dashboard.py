@@ -13,6 +13,7 @@ from pathlib import Path
 
 import matplotlib
 matplotlib.use("Agg")
+matplotlib.rcParams["text.parse_math"] = False  # "R$" não é fórmula
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
@@ -34,6 +35,10 @@ DPI, LARGURA, ALTURA = 100, 19.20, 10.80
 
 def reais(v, casas=2):
     return "R$ " + f"{v:,.{casas}f}".replace(",", "@").replace(".", ",").replace("@", ".")
+
+
+def milhar(n):
+    return f"{n:,}".replace(",", ".")
 
 
 def pct(v, casas=1):
@@ -259,19 +264,23 @@ def pagina5(ind):
     for i, cidade in enumerate(("Brasília", "Goiânia")):
         dados = p5["cidades"][cidade]
         bandeiras = [b for b in ordem if b in dados]
-        eixo = fig.add_axes([0.07 + i * 0.47, 0.13, 0.40, 0.56])
+        eixo = fig.add_axes([0.13 + i * 0.47, 0.15, 0.34, 0.54])
         valores = [dados[b]["desvio_medio"] for b in bandeiras]
         cores = ["#1AAB40" if v < 0 else COR[cidade] for v in valores]
-        barras = eixo.barh(bandeiras, valores, color=cores, height=0.6)
-        for barra, v, b in zip(barras, valores, bandeiras):
+        rotulos = [f"{b}\n{milhar(dados[b]['coletas'])} coletas, {dados[b]['postos']} postos" for b in bandeiras]
+        barras = eixo.barh(rotulos, valores, color=cores, height=0.6)
+        limite = max(abs(v) for v in valores) * 2.2
+        for barra, v in zip(barras, valores):
             sinal = "+" if v >= 0 else "-"
-            eixo.text(v + (0.004 if v >= 0 else -0.004), barra.get_y() + barra.get_height() / 2,
-                      f"{sinal}{reais(abs(v), 3)}  ({dados[b]['coletas']} coletas)",
-                      va="center", ha="left" if v >= 0 else "right", fontsize=12, color="#242424")
+            eixo.text(v + (limite * 0.03 if v >= 0 else -limite * 0.03), barra.get_y() + barra.get_height() / 2,
+                      f"{sinal}{reais(abs(v), 3)}", va="center", ha="left" if v >= 0 else "right",
+                      fontsize=14, color="#242424", fontweight="bold")
         eixo.axvline(0, color="#9E9E9E", linewidth=1)
-        limite = max(abs(v) for v in valores) * 2.4
         eixo.set_xlim(-limite, limite)
-        eixo.xaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: reais(v, 2)))
+        # Eixo em centavos por litro, com marcas a cada 2 centavos.
+        eixo.xaxis.set_major_locator(plt.MultipleLocator(0.02))
+        eixo.xaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{round(v * 100):+d}".replace("+0", "0")))
+        eixo.set_xlabel("centavos por litro em relação à média da semana", fontsize=12, color=CINZA)
         eixo.tick_params(axis="y", labelsize=14)
         eixo.set_title(cidade, loc="left", fontsize=19, color=COR[cidade], fontweight="bold", pad=10)
         estiliza(eixo, grade="x")
