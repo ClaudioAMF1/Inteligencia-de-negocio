@@ -17,6 +17,10 @@ Atividades avaliativas da disciplina, Prof. Bruno Miranda.
 | [DataLab 7-B2](datalab7/) | Análise financeira, custos e receitas da firma | [PDF](datalab7/entrega/) · [dashboard](datalab7/imagens/) |
 | [DataLab 8-B2](datalab8/) | Mercado de trabalho em TI no Brasil (APINFO 2025) | [PDF](datalab8/entrega/) |
 | [Pré-projeto](preprojeto/) | Avaliação Continuada — escopo do projeto aplicado final | [PDF](preprojeto/entrega/) |
+| [Projeto Aplicado](projeto/) | Preço de combustível e peso no orçamento do consumidor: Brasília × Goiânia | [relatório](projeto/entrega/) · [dashboard](projeto/imagens/) · [código](projeto/scripts/) |
+
+O projeto aplicado tem o próprio pipeline em `projeto/scripts/`, descrito em
+[`projeto/README.md`](projeto/README.md).
 
 Cada pasta tem um `README.md` com o detalhe da atividade, as análises construídas e o
 passo a passo para reproduzir a entrega.
