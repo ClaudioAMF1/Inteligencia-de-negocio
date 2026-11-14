@@ -1,5 +1,5 @@
 """
-DataLabs 5-B1 e 6-B1 - gera os prints que evidenciam o trabalho.
+DataLabs 5-B1, 6-B1 e 10-B2 - gera os prints que evidenciam o trabalho.
 
 O enunciado pede o print do exercício. Como os scripts rodam aqui no terminal e
 não no Colab, as evidências são montadas no mesmo formato das células do
@@ -25,7 +25,9 @@ LINHAS_POR_IMAGEM = 38
 LABS = {
     "datalab5": RAIZ / "datalab5" / "viabilidade_valor_presente.py",
     "datalab6": RAIZ / "datalab6" / "viabilidade_vpl_tir.py",
+    "datalab10": RAIZ / "datalab10" / "risco_retorno_carteira.py",
 }
+LINHAS_DE_CONSOLE = 52
 
 ESTILO = """
 * { box-sizing: border-box; }
@@ -86,6 +88,17 @@ def _renderiza(conteudo_html, destino):
     print(f"  {destino.relative_to(RAIZ)}")
 
 
+def _partes(linhas, tamanho):
+    """Quebra uma lista de linhas em pedaços de até `tamanho`. Um resto muito curto
+    no fim vira uma imagem quase vazia, então ele volta para o pedaço anterior."""
+    cortes = list(range(0, len(linhas), tamanho))
+    if len(cortes) > 1 and len(linhas) - cortes[-1] < tamanho // 4:
+        cortes.pop()
+    for ordem, inicio in enumerate(cortes):
+        fim = cortes[ordem + 1] if ordem + 1 < len(cortes) else len(linhas)
+        yield inicio, linhas[inicio:fim]
+
+
 def _partes_do_codigo(fonte):
     """Quebra o código em pedaços que caibam numa imagem legível. Um resto muito
     curto no fim vira uma imagem quase vazia, então ele volta para o pedaço anterior."""
@@ -109,7 +122,8 @@ def main():
     if not CHROMIUM.exists():
         raise SystemExit(f"Chromium não encontrado em {CHROMIUM}")
 
-    for lab, script in LABS.items():
+    escolhidos = sys.argv[1:] or list(LABS)
+    for lab, script in ((l, LABS[l]) for l in escolhidos):
         saida = RAIZ / lab / "imagens"
         print(f"{lab}:")
         fonte = script.read_text(encoding="utf-8")
@@ -121,9 +135,12 @@ def main():
             _renderiza(_html([_celula(rotulo, corpo, "codigo")]),
                        saida / f"codigo_{indice}.png")
 
-        console = html.escape(_executa(script))
-        _renderiza(_html([_celula("Saída do console", console, "saida")]),
-                   saida / "console.png")
+        console = _executa(script).split("\n")
+        partes = list(_partes(console, LINHAS_DE_CONSOLE))
+        for indice, (_, trecho) in enumerate(partes, start=1):
+            rotulo = "Saída do console" + (f" ({indice}/{len(partes)})" if len(partes) > 1 else "")
+            nome = "console.png" if len(partes) == 1 else f"console_{indice}.png"
+            _renderiza(_html([_celula(rotulo, html.escape("\n".join(trecho)), "saida")]), saida / nome)
 
 
 if __name__ == "__main__":

@@ -104,18 +104,19 @@ def _insere_prints(documento, prints):
         atual.alignment = WD_ALIGN_PARAGRAPH.CENTER
         for run in atual.runs:
             run._element.getparent().remove(run._element)
-        atual.add_run().add_picture(str(imagem), width=LARGURA_IMAGEM)
-        # prende a imagem à sua legenda, para a quebra de página não separar as duas
-        atual.paragraph_format.keep_with_next = True
-
-        atual = _clona_depois(atual, legenda)
         _sem_lista(atual)
-        atual.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        for run in atual.runs:
-            run.italic = True
-            run.bold = False
-            run.font.size = Pt(9)
-            run.font.color.rgb = PRETO
+        imagem_run = atual.add_run()
+        imagem_run.add_picture(str(imagem), width=LARGURA_IMAGEM)
+        # A legenda fica no mesmo parágrafo da imagem, depois de uma quebra de linha:
+        # assim a quebra de página nunca separa as duas (o LibreOffice nem sempre
+        # respeita o "manter com o próximo" entre parágrafos).
+        imagem_run.add_break()
+        rotulo = atual.add_run(legenda)
+        rotulo.italic = True
+        rotulo.bold = False
+        rotulo.font.size = Pt(9)
+        rotulo.font.color.rgb = PRETO
+        atual.paragraph_format.keep_together = True
 
 
 def _responde(documento, pergunta, paragrafos):

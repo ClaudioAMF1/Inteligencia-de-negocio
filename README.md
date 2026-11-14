@@ -16,6 +16,7 @@ Atividades avaliativas da disciplina, Prof. Bruno Miranda.
 | [DataLab 6-B1](datalab6/) | VPL e TIR com Python | [PDF](datalab6/entrega/) · [código](datalab6/viabilidade_vpl_tir.py) |
 | [DataLab 7-B2](datalab7/) | Análise financeira, custos e receitas da firma | [PDF](datalab7/entrega/) · [dashboard](datalab7/imagens/) |
 | [DataLab 8-B2](datalab8/) | Mercado de trabalho em TI no Brasil (APINFO 2025) | [PDF](datalab8/entrega/) |
+| [DataLab 10-B2](datalab10/) | Relação risco versus retorno em carteiras de investimento (B3) | [PDF](datalab10/entrega/) · [código](datalab10/risco_retorno_carteira.py) |
 | [Pré-projeto](preprojeto/) | Avaliação Continuada — escopo do projeto aplicado final | [PDF](preprojeto/entrega/) |
 | [Projeto Aplicado](projeto/) | Preço de combustível e peso no orçamento do consumidor: Brasília × Goiânia | [relatório](projeto/entrega/) · [dashboard](projeto/imagens/) · [código](projeto/scripts/) |
 
@@ -38,18 +39,19 @@ Tudo o que está em `datalab3/` e `datalab4/` é reproduzível a partir dos dado
 | `scripts/05_renderiza_graficos_datalab4.py` | Gera os 3 gráficos da série histórica |
 | `scripts/06_gera_entrega_datalab4.py` | Monta a entrega do DataLab 4 no template do aluno |
 | `scripts/07_gera_preprojeto.py` | Monta o pré-projeto da Avaliação Continuada |
-| `scripts/08_renderiza_prints_labs.py` | Renderiza os prints de código e console dos DataLabs 5 e 6 |
+| `scripts/08_renderiza_prints_labs.py` | Renderiza os prints de código e console dos DataLabs 5, 6 e 10 |
 | `scripts/09_gera_entrega_datalab5.py` | Monta a entrega do DataLab 5 |
 | `scripts/10_gera_entrega_datalab6.py` | Monta a entrega do DataLab 6 |
 | `scripts/11_trata_dados_datalab7.py` | Trata o dataset financeiro do DataLab 7 (Unpivot, número, data) |
 | `scripts/12_renderiza_dashboard_datalab7.py` | Gera as 7 páginas do dashboard do DataLab 7 |
 | `scripts/13_gera_entrega_datalab7.py` | Preenche o documento da tarefa do DataLab 7 |
+| `scripts/14_gera_entrega_datalab10.py` | Monta a entrega do DataLab 10 |
 | `scripts/entrega.py` | Módulo comum: preenche o template `.docx` e converte para PDF |
 
 ### Dependências
 
 ```bash
-pip install python-docx openpyxl matplotlib numpy-financial pygments pillow
+pip install python-docx openpyxl matplotlib numpy-financial pygments pillow pandas
 ```
 
 A conversão para PDF usa o LibreOffice (`soffice`), que precisa estar instalado com o
@@ -71,4 +73,7 @@ python3 scripts/10_gera_entrega_datalab6.py
 python3 scripts/11_trata_dados_datalab7.py
 python3 scripts/12_renderiza_dashboard_datalab7.py
 python3 scripts/13_gera_entrega_datalab7.py
+python3 datalab10/risco_retorno_carteira.py
+python3 scripts/08_renderiza_prints_labs.py datalab10
+python3 scripts/14_gera_entrega_datalab10.py
 ```
