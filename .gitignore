@@ -3,3 +3,4 @@ __pycache__/
 
 # projeto aplicado: downloads em andamento e cache do Python
 projeto/dados/anp/*.parcial
+datalab10/dados/cotahist/
