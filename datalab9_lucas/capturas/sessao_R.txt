@@ -1,0 +1,25 @@
+Script started on 2026-11-08 18:05:40-03:00 [COMMAND="/workspace/scratch/592dcf4bebfc/r-runtime/usr/lib/R/bin/R --vanilla --quiet" TERM="st-256color" TTY="/dev/pts/0" COLUMNS="100" LINES="28"]
+> R.version.string
+[1] "R version 4.3.3 (2024-02-29)"
+> source("indicadores_mercado_trabalho.R")
+DATALAB 9-B2 - SANTA CATARINA
+Lucas Fiche Ungarelli Borges | RA 2021068
+PNAD Contínua | 4º trimestre de 2025 | 14 anos ou mais
+
+INDICADOR               NUMERADOR / BASE       TAXA
+Participação           4590 / 6759      67,91%
+Ocupação               4491 / 4590      97,84%
+Desocupação              99 / 4590       2,16%
+Informalidade            1155 / 4491      25,72%
+Formalização           3336 / 4491      74,28%
+Nível de ocupação     4491 / 6759      66,44%
+
+Contagens em mil pessoas. Fonte: IBGE, SIDRA 4093.
+Formais = ocupados - informais: 3336 mil pessoas.
+Fora da força de trabalho: 2169 mil pessoas.
+Ocupação e desocupação somam 100 %.
+Informalidade e formalização somam 100 %.
+O nível de ocupação usa PIA; a taxa de ocupação usa FT.
+> q("no")
+
+Script done on 2026-11-08 18:05:42-03:00 [COMMAND_EXIT_CODE="0"]

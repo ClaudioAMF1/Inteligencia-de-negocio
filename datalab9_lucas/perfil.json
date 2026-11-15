@@ -1,0 +1,21 @@
+{
+  "nome": "Lucas Fiche Ungarelli Borges",
+  "matricula": "2021068",
+  "uf": "42",
+  "sigla": "SC",
+  "estado": "Santa Catarina",
+  "periodo": "4º trimestre de 2025",
+  "totais": {
+    "pia": 6759,
+    "ft": 4590,
+    "ocupados": 4491,
+    "desocupados": 99,
+    "informais": 1155
+  },
+  "referencia_ibge": {
+    "participacao": 67.9,
+    "nivel_ocupacao": 66.4,
+    "desocupacao": 2.2,
+    "informalidade": 25.7
+  }
+}

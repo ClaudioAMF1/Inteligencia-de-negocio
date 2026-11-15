@@ -1,0 +1,21 @@
+{
+  "nome": "Claudio da Aparecida Meireles Filho",
+  "matricula": "2321070",
+  "uf": "53",
+  "sigla": "DF",
+  "estado": "Distrito Federal",
+  "periodo": "4º trimestre de 2025",
+  "totais": {
+    "pia": 2489,
+    "ft": 1670,
+    "ocupados": 1557,
+    "desocupados": 113,
+    "informais": 422
+  },
+  "referencia_ibge": {
+    "participacao": 67.1,
+    "nivel_ocupacao": 62.5,
+    "desocupacao": 6.8,
+    "informalidade": 27.1
+  }
+}
