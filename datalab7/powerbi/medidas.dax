@@ -1,0 +1,28 @@
+// DataLab 7-B2 - medidas DAX da tabela "dados".
+// Modelagem > Nova medida > cole uma medida por vez.
+
+Total Receitas =
+CALCULATE ( SUM ( dados[Valor] ), dados[Tipo] = "Receitas" )
+
+Total Despesas =
+CALCULATE ( SUM ( dados[Valor] ), dados[Tipo] = "Despesas" )
+
+Lucro =
+[Total Receitas] - [Total Despesas]
+
+Margem de Lucro =
+DIVIDE ( [Lucro], [Total Receitas] )
+// Formatar como Porcentagem, 2 casas decimais.
+
+// Média do total de despesas entre os seis componentes de despesa. Fica constante
+// em todas as barras do gráfico da página 5, servindo de linha de referência.
+// Alternativa sem DAX: painel Análise do visual > Linha média.
+Média de Despesas por Componente =
+AVERAGEX (
+    CALCULATETABLE (
+        VALUES ( dados[Componente] ),
+        dados[Tipo] = "Despesas",
+        ALL ( dados[Componente] )
+    ),
+    CALCULATE ( [Total Despesas] )
+)
