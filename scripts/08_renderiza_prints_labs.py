@@ -1,5 +1,5 @@
 """
-DataLabs 5-B1, 6-B1 e 10-B2 - gera os prints que evidenciam o trabalho.
+DataLabs 5-B1, 6-B1, 9-B2 e 10-B2 - gera os prints que evidenciam o trabalho.
 
 O enunciado pede o print do exercício. Como os scripts rodam aqui no terminal e
 não no Colab, as evidências são montadas no mesmo formato das células do
@@ -7,6 +7,7 @@ notebook usado em aula: o código com numeração de linha e, abaixo, a saída r
 do console. O HTML é renderizado pelo Chromium em modo headless.
 """
 import html
+import os
 import subprocess
 import sys
 import tempfile
@@ -15,16 +16,19 @@ from pathlib import Path
 from PIL import Image
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
-from pygments.lexers import PythonLexer
+from pygments.lexers import PythonLexer, SLexer
 
 RAIZ = Path(__file__).resolve().parent.parent
-CHROMIUM = Path("/opt/pw-browsers/chromium-1194/chrome-linux/chrome")
+# Chromium do Playwright; a pasta muda de nome com a versão, então procuro a que existir
+CHROMIUM = next(iter(sorted(Path("/opt/pw-browsers").glob("chromium-*/chrome-linux*/chrome"))),
+                Path("/opt/pw-browsers/chromium/chrome-linux/chrome"))
 LARGURA = 980
 LINHAS_POR_IMAGEM = 38
 
 LABS = {
     "datalab5": RAIZ / "datalab5" / "viabilidade_valor_presente.py",
     "datalab6": RAIZ / "datalab6" / "viabilidade_vpl_tir.py",
+    "datalab9": RAIZ / "datalab9" / "indicadores_pnad_microdados.R",
     "datalab10": RAIZ / "datalab10" / "risco_retorno_carteira.py",
 }
 LINHAS_DE_CONSOLE = 52
@@ -112,9 +116,15 @@ def _partes_do_codigo(fonte):
 
 
 def _executa(script):
-    """Roda o exercício e devolve a saída real do console."""
-    resultado = subprocess.run([sys.executable, str(script)],
-                               capture_output=True, text=True, check=True)
+    """Roda o exercício e devolve a saída real do console. Scripts em R rodam com o
+    Rscript, na pasta do próprio script (os caminhos dos dados são relativos a ela)."""
+    if script.suffix == ".R":
+        resultado = subprocess.run(["Rscript", "--vanilla", script.name], cwd=script.parent,
+                                   env={**os.environ, "LC_ALL": "C.UTF-8"},
+                                   capture_output=True, text=True, check=True)
+    else:
+        resultado = subprocess.run([sys.executable, str(script)],
+                                   capture_output=True, text=True, check=True)
     return resultado.stdout.rstrip("\n")
 
 
@@ -130,7 +140,8 @@ def main():
 
         for indice, (primeira, trecho) in enumerate(_partes_do_codigo(fonte), start=1):
             formatador = HtmlFormatter(linenos="table", linenostart=primeira)
-            corpo = highlight(trecho, PythonLexer(), formatador)
+            lexer = SLexer() if script.suffix == ".R" else PythonLexer()
+            corpo = highlight(trecho, lexer, formatador)
             rotulo = f"{script.name} - linhas {primeira} a {primeira + trecho.count(chr(10))}"
             _renderiza(_html([_celula(rotulo, corpo, "codigo")]),
                        saida / f"codigo_{indice}.png")

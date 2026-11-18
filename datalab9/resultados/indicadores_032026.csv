@@ -1,0 +1,11 @@
+"local","indicador","taxa","erro_padrao","ibge"
+"Brasil","1. Taxa de participação na força de trabalho",62.1785,0.1303,62.2
+"Brasil","2. Taxa de ocupação (ou emprego)",58.976,0.1344,59
+"Brasil","3. Taxa de desemprego (ou desocupação)",5.1505,0.0749,5.2
+"Brasil","4. Taxa de informalidade",37.4566,0.1799,37.5
+"Brasil","5. Grau de formalização do emprego",59.0826,0.1834,NA
+"Distrito Federal","1. Taxa de participação na força de trabalho",67.9815,0.7328,68
+"Distrito Federal","2. Taxa de ocupação (ou emprego)",64.2794,0.7568,64.3
+"Distrito Federal","3. Taxa de desemprego (ou desocupação)",5.4457,0.3828,5.4
+"Distrito Federal","4. Taxa de informalidade",26.7331,0.8952,26.7
+"Distrito Federal","5. Grau de formalização do emprego",70.2681,0.8915,NA
