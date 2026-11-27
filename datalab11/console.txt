@@ -1,0 +1,12 @@
+Claudio da Aparecida Meireles Filho | Matrícula 2321070
+Brasília (DF) | Novo CAGED | Janeiro a março de 2026
+    mes admissoes desligamentos saldo
+ 202601     39381         37369  2012
+ 202602     43391         36527  6864
+ 202603     45739         39028  6711
+Saldo trimestral: 15587 
+ Feminino Masculino 
+  2798.26   2634.21 
+Diferença percentual sobre a menor média: 6.23 %
+Variação dos desligamentos entre meses: -842 2501 
+Mês com mais desligamentos: 202603 
