@@ -1,0 +1,16 @@
+Claudio da Aparecida Meireles Filho | Matrícula 2321070
+DataLab 12-B2 | Simulação de 200 carteiras
+B3 | 14/10/2026 a 26/11/2026 | 30 pregões | 29 retornos diários
+Sorteio dos pesos | Semente 2321070
+
+Ação       Fech. inicial    Fech. final    Retorno/dia     Vol./dia
+ABEV3          R$ 16,52       R$ 16,43         0,006%       2,242%
+ITUB4          R$ 48,98       R$ 42,56        -0,431%       3,199%
+SUZB3          R$ 42,89       R$ 54,87         0,877%       2,292%
+
+Carteira                  ABEV3    ITUB4    SUZB3    Retorno/dia    Vol./dia
+Menor risco #184         34,45%   14,15%   51,41%         0,392%      0,939%
+Pesos iguais             33,33%   33,33%   33,33%         0,151%      1,292%
+Maior retorno #81        15,20%    2,97%   81,83%         0,706%      1,635%
+
+Volatilidade = desvio-padrão dos retornos diários.

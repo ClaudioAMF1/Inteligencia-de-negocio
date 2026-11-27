@@ -17,6 +17,7 @@ Atividades avaliativas da disciplina, Prof. Bruno Miranda.
 | [DataLab 7-B2](datalab7/) | Análise financeira, custos e receitas da firma | [PDF](datalab7/entrega/) · [dashboard](datalab7/imagens/) |
 | [DataLab 8-B2](datalab8/) | Mercado de trabalho em TI no Brasil (APINFO 2025) | [PDF](datalab8/entrega/) |
 | [DataLab 10-B2](datalab10/) | Relação risco versus retorno em carteiras de investimento (B3) | [PDF](datalab10/entrega/) · [código](datalab10/risco_retorno_carteira.py) |
+| [DataLab 12-B2](datalab12/) | Simulação de 200 carteiras com três ações da B3 | [PDF](datalab12/entrega/DataLab12_Claudio_2321070.pdf) · [código](datalab12/simulacao_carteiras.py) |
 | [Pré-projeto](preprojeto/) | Avaliação Continuada — escopo do projeto aplicado final | [PDF](preprojeto/entrega/) |
 | [Projeto Aplicado](projeto/) | Preço de combustível e peso no orçamento do consumidor: Brasília × Goiânia | [relatório](projeto/entrega/) · [dashboard](projeto/imagens/) · [código](projeto/scripts/) |
 
